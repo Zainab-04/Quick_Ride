@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useUser } from "../contexts/userContext";
+import { useUser } from "../contexts/UserContext";
 import map from "/map.png";
 import {
   Button,

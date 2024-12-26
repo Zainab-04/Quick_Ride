@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Children, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../contexts/userContext";
+import { useUser } from "../contexts/UserContext";
 function UserProtectedWrapper({ children }) {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
