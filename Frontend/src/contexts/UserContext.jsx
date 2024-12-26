@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 
 export const userDataContext = createContext();
 
-function UserContext({ children }) {
+const UserContext = ({ children }) => {
   const [user, setUser] = useState({
     email: "",
     fullname: {
@@ -16,7 +16,7 @@ function UserContext({ children }) {
       {children}
     </userDataContext.Provider>
   );
-}
+};
 
 export const useUser = () => {
   const { user, setUser } = useContext(userDataContext);
