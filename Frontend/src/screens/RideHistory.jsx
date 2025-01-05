@@ -70,7 +70,7 @@ function RideHistory() {
 
       <div className="h-[90vh] overflow-scroll ">
         <details open className="group">
-          <summary class="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
+          <summary className="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
             <span>Today</span>
             <ChevronUp className="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-gray-600" />
           </summary>
@@ -81,7 +81,7 @@ function RideHistory() {
 
         {classifyAndSortRides(user.rides).yesterday.length > 0 && (
           <details open className="group">
-            <summary class="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
+            <summary className="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
               <span>Yesterday</span>
               <ChevronUp className="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-gray-600" />
             </summary>
@@ -92,7 +92,7 @@ function RideHistory() {
         )}
         {classifyAndSortRides(user.rides).earlier.length > 0 && (
           <details open className="group">
-            <summary class="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
+            <summary className="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
               <span>Earlier</span>
               <ChevronUp className="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-gray-600" />
             </summary>

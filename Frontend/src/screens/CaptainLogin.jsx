@@ -24,6 +24,10 @@ function CaptainLogin() {
       );
       console.log(response);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userData", JSON.stringify({
+        type: "captain",
+        data: response.data.captain,
+      }));
       navigation("/captain/home");
     } catch (error) {
       setResponseError(error.response.data.message);

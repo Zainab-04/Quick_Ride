@@ -20,6 +20,7 @@ function CaptainProtectedWrapper({ children }) {
       })
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data.captain)
           setCaptain(response.data.captain);
           localStorage.setItem("userData", JSON.stringify({
             type: "captain",

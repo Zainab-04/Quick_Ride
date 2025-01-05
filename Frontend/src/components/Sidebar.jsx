@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  CarFront,
-  ChevronRight,
-  CircleUserRound,
-  History,
-  Menu,
-  X,
-} from "lucide-react";
-import { useUser } from "../contexts/UserContext";
-import { useCaptain } from "../contexts/CaptainContext";
+import { ChevronRight, CircleUserRound, History, Menu, X } from "lucide-react";
 import Button from "./Button";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 function Sidebar() {
   const [showSidebar, setShowSidebar] = useState(false);
 
-//   const token = localStorage.getItem("token");
-  const userData = JSON.parse(localStorage.getItem("userData"));
-  const [newUser, setNewUser] = useState(userData.data);
-//   const { user } = useUser();
-//   const { captain } = useCaptain();
+  const [newUser, setNewUser] = useState({});
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    setNewUser(userData);
+  }, []);
 
   const navigate = useNavigate();
 
@@ -65,14 +57,17 @@ function Sidebar() {
           <div className="leading-3 my-4">
             <div className="my-2 rounded-full w-24 h-24 bg-blue-400 mx-auto flex items-center justify-center">
               <h1 className="text-5xl text-white">
-                {newUser?.fullname?.firstname[0]}
-                {newUser?.fullname?.lastname[0]}
+                {newUser?.data?.fullname?.firstname[0]}
+                {newUser?.data?.fullname?.lastname[0]}
               </h1>
             </div>
             <h1 className=" text-center font-semibold text-2xl">
-              {newUser?.fullname?.firstname} {newUser?.fullname?.lastname}
+              {newUser?.data?.fullname?.firstname}{" "}
+              {newUser?.data?.fullname?.lastname}
             </h1>
-            <h1 className=" text-center text-zinc-400 ">{newUser?.email}</h1>
+            <h1 className=" text-center text-zinc-400 ">
+              {newUser?.data?.email}
+            </h1>
           </div>
 
           <Link className="flex items-center justify-between py-4 cursor-pointer hover:bg-zinc-100 rounded-xl px-3">
@@ -84,7 +79,10 @@ function Sidebar() {
             </div>
           </Link>
 
-          <Link to={`/${userData.type}/rides`} className="flex items-center justify-between py-4 cursor-pointer hover:bg-zinc-100 rounded-xl px-3">
+          <Link
+            to={`/${newUser?.type}/rides`}
+            className="flex items-center justify-between py-4 cursor-pointer hover:bg-zinc-100 rounded-xl px-3"
+          >
             <div className="flex gap-3">
               <History /> <h1>Ride History</h1>
             </div>

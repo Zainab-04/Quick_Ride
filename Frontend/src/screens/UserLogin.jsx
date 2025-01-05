@@ -24,6 +24,10 @@ function UserLogin() {
       );
       console.log(response);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userData", JSON.stringify({
+        type: "user",
+        data: response.data.user,
+      }));
       navigation("/home");
     } catch (error) {
       setResponseError(error.response.data.message);
