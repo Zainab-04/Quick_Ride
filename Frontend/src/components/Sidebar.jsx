@@ -5,6 +5,7 @@ import Button from "./Button";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 function Sidebar() {
+  const token = localStorage.getItem("token");
   const [showSidebar, setShowSidebar] = useState(false);
 
   const [newUser, setNewUser] = useState({});
@@ -19,7 +20,7 @@ function Sidebar() {
   const logout = async () => {
     try {
       await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/${userType}/profile`,
+        `${import.meta.env.VITE_SERVER_URL}/${newUser.type}/profile`,
         {
           headers: {
             token: token,
