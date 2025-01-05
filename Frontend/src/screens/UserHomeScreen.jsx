@@ -6,6 +6,7 @@ import {
   LocationSuggestions,
   SelectVehicle,
   RideDetails,
+  Sidebar
 } from "../components";
 import axios from "axios";
 import debounce from "lodash.debounce";
@@ -35,6 +36,7 @@ function UserHomeScreen() {
   const [confirmedRideData, setConfirmedRideData] = useState(null);
 
   // Panels
+  const [showSidebar, setShowSidebar] = useState(false);
   const [showFindTripPanel, setShowFindTripPanel] = useState(true);
   const [showSelectVehiclePanel, setShowSelectVehiclePanel] = useState(false);
   const [showRideDetailsPanel, setShowRideDetailsPanel] = useState(false);
@@ -59,7 +61,7 @@ function UserHomeScreen() {
           console.log(error);
         }
       }
-    }, 200),
+    }, 500),
     []
   );
 
@@ -72,7 +74,7 @@ function UserHomeScreen() {
       setDestinationLocation(value);
     }
 
-    handleLocationChange(value, token);
+    // handleLocationChange(value, token);
 
     if (e.target.value.length < 3) {
       setLocationSuggestion([]);
@@ -232,6 +234,7 @@ function UserHomeScreen() {
       className="relative w-full h-dvh bg-contain"
       style={{ backgroundImage: `url(${map})` }}
     >
+      <Sidebar/>
       <iframe
         src={mapLocation}
         className="absolute map w-full h-[120vh]"

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useCaptain } from "../contexts/CaptainContext";
 import { User } from "lucide-react";
 import { SocketDataContext } from "../contexts/SocketContext";
-import { NewRide } from "../components";
+import { NewRide, Sidebar } from "../components";
 
 function CaptainHomeScreen() {
   const token = localStorage.getItem("token");
@@ -151,7 +151,7 @@ function CaptainHomeScreen() {
           duration: 0,
           distance: 0,
           _id: "123456789012345678901234",
-        })
+        });
       }
     } catch (err) {
       setLoading(false);
@@ -290,6 +290,7 @@ function CaptainHomeScreen() {
       className="relative w-full h-dvh bg-contain"
       style={{ backgroundImage: `url(${map})` }}
     >
+      <Sidebar />
       <iframe
         src={mapLocation}
         className="map w-full h-[80vh]"

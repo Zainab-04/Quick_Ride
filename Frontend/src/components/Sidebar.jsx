@@ -1,0 +1,103 @@
+import React, { useEffect, useState } from "react";
+
+import {
+  CarFront,
+  ChevronRight,
+  CircleUserRound,
+  History,
+  Menu,
+  X,
+} from "lucide-react";
+import { useUser } from "../contexts/UserContext";
+import { useCaptain } from "../contexts/CaptainContext";
+import Button from "./Button";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+function Sidebar() {
+  const [showSidebar, setShowSidebar] = useState(false);
+
+//   const token = localStorage.getItem("token");
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const [newUser, setNewUser] = useState(userData.data);
+//   const { user } = useUser();
+//   const { captain } = useCaptain();
+
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    try {
+      await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/${userType}/profile`,
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("userType");
+      navigate("/");
+    } catch (error) {
+      console.log("Error getting logged out", error);
+    }
+  };
+  return (
+    <>
+      <div
+        className="m-3 mt-4 absolute right-0 top-0 z-20 cursor-pointer bg-white p-1 rounded"
+        onClick={() => {
+          setShowSidebar(!showSidebar);
+        }}
+      >
+        {showSidebar ? <X /> : <Menu />}
+      </div>
+
+      {/* Sidebar Component */}
+      <div
+        className={`${
+          showSidebar ? " left-0 " : " -left-[100%] "
+        } z-10 duration-300 absolute w-full h-screen bottom-0 bg-white p-4 pt-5 flex flex-col justify-between`}
+      >
+        <div className="select-none">
+          <h1 className="text-2xl font-semibold ">Profile</h1>
+
+          <div className="leading-3 my-4">
+            <div className="my-2 rounded-full w-24 h-24 bg-blue-400 mx-auto flex items-center justify-center">
+              <h1 className="text-5xl text-white">
+                {newUser?.fullname?.firstname[0]}
+                {newUser?.fullname?.lastname[0]}
+              </h1>
+            </div>
+            <h1 className=" text-center font-semibold text-2xl">
+              {newUser?.fullname?.firstname} {newUser?.fullname?.lastname}
+            </h1>
+            <h1 className=" text-center text-zinc-400 ">{newUser?.email}</h1>
+          </div>
+
+          <Link className="flex items-center justify-between py-4 cursor-pointer hover:bg-zinc-100 rounded-xl px-3">
+            <div className="flex gap-3">
+              <CircleUserRound /> <h1>Edit Profile</h1>
+            </div>
+            <div>
+              <ChevronRight />
+            </div>
+          </Link>
+
+          <Link to={`/${userData.type}/rides`} className="flex items-center justify-between py-4 cursor-pointer hover:bg-zinc-100 rounded-xl px-3">
+            <div className="flex gap-3">
+              <History /> <h1>Ride History</h1>
+            </div>
+            <div>
+              <ChevronRight />
+            </div>
+          </Link>
+        </div>
+
+        <Button title={"Logout"} classes={"bg-red-500"} fun={logout} />
+      </div>
+    </>
+  );
+}
+
+export default Sidebar;

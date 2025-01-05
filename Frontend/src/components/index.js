@@ -6,6 +6,7 @@ import NewRide from "./NewRide";
 import RideDetails from "./RideDetails";
 import SelectVehicle from "./SelectVehicle";
 import Spinner from "./Spinner";
+import Sidebar from "./Sidebar";
 
 export {
   Button,
@@ -15,5 +16,6 @@ export {
   NewRide,
   RideDetails,
   SelectVehicle,
+  Sidebar,
   Spinner
 };

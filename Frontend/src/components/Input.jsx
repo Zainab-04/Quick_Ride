@@ -11,7 +11,7 @@ function Input({ label, type, name, register, error, options }) {
         >
           {options.map((option) => {
             return (
-              <option key={option} value={option} className="w-full">
+              <option key={option} value={option.toLowerCase()} className="w-full">
                 {option}
               </option>
             );

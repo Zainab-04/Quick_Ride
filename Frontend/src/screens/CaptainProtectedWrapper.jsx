@@ -21,10 +21,15 @@ function CaptainProtectedWrapper({ children }) {
       .then((response) => {
         if (response.status === 200) {
           setCaptain(response.data.captain);
+          localStorage.setItem("userData", JSON.stringify({
+            type: "captain",
+            data: response.data.captain,
+          }));
         }
       })
       .catch((err) => {
         localStorage.removeItem("token");
+        localStorage.removeItem("userData");
         navigate("/captain/login");
       });
   }, [token]);

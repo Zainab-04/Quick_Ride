@@ -3,22 +3,28 @@ import React, { createContext, useContext, useState } from "react";
 export const captainDataContext = createContext();
 
 function CaptainContext({ children }) {
-  const [captain, setCaptain] = useState({
-    email: "",
-    fullname: {
-      firstname: "",
-      lastname: "",
-    },
-    vehicle: {
-      color: "",
-      number: "",
-      capacity: 0,
-      type: "",
-    },
-    // _id: "",
-    rides: [],
-    status: "inactive",
-  });
+  const userData = JSON.parse(localStorage.getItem("userData"));
+
+  const [captain, setCaptain] = useState(
+    userData?.type == "captain"
+      ? userData.data
+      : {
+          email: "",
+          fullname: {
+            firstname: "",
+            lastname: "",
+          },
+          vehicle: {
+            color: "",
+            number: "",
+            capacity: 0,
+            type: "",
+          },
+          // _id: "",
+          rides: [],
+          status: "inactive",
+        }
+  );
 
   return (
     <captainDataContext.Provider value={{ captain, setCaptain }}>

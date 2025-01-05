@@ -21,10 +21,15 @@ function UserProtectedWrapper({ children }) {
       .then((response) => {
         if (response.status === 200) {
           setUser(response.data.user);
+          localStorage.setItem("userData", JSON.stringify({
+            type: "user",
+            data: response.data.user,
+          }));
         }
       })
       .catch((err) => {
         localStorage.removeItem("token");
+        localStorage.removeItem("userData");
         navigate("/login");
       });
   }, [token]);

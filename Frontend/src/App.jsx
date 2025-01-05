@@ -11,6 +11,7 @@ import {
   UserSignup,
   CaptainSignup,
 } from "./screens/";
+import RideHistory from "./screens/RideHistory";
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
             />
             <Route path="/login" element={<UserLogin />} />
             <Route path="/signup" element={<UserSignup />} />
+            <Route path="/:user/rides" element={<RideHistory />} />
+
             <Route
               path="/captain/home"
               element={
