@@ -53,7 +53,7 @@ function Sidebar() {
         } z-10 duration-300 absolute w-full h-screen bottom-0 bg-white p-4 pt-5 flex flex-col justify-between`}
       >
         <div className="select-none">
-          <h1 className="text-2xl font-semibold ">Profile</h1>
+          <h1 className="relative text-2xl font-semibold ">Profile</h1>
 
           <div className="leading-3 my-4">
             <div className="my-2 rounded-full w-24 h-24 bg-blue-400 mx-auto flex items-center justify-center">
@@ -66,12 +66,15 @@ function Sidebar() {
               {newUser?.data?.fullname?.firstname}{" "}
               {newUser?.data?.fullname?.lastname}
             </h1>
-            <h1 className=" text-center text-zinc-400 ">
+            <h1 className="mt-1 text-center text-zinc-400 ">
               {newUser?.data?.email}
             </h1>
           </div>
 
-          <Link className="flex items-center justify-between py-4 cursor-pointer hover:bg-zinc-100 rounded-xl px-3">
+          <Link
+            to={`/${newUser?.type}/edit-profile`}
+            className="flex items-center justify-between py-4 cursor-pointer hover:bg-zinc-100 rounded-xl px-3"
+          >
             <div className="flex gap-3">
               <CircleUserRound /> <h1>Edit Profile</h1>
             </div>

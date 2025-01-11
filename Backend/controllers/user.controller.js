@@ -61,11 +61,11 @@ module.exports.userProfile = asyncHandler(async (req, res) => {
 });
 
 module.exports.updateUserProfile = asyncHandler(async (req, res) => {
-  const { newData } = req.body;
-
+  const { userData } = req.body;
+  console.log(req.body);
   const updatedUserData = await userModel.findOneAndUpdate(
-    { email: req.user.email },
-    newData,
+    { _id: req.user._id },
+    userData,
     { new: true }
   );
 

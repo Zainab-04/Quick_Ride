@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { userDataContext, useUser } from "../contexts/UserContext";
-import { useCaptain } from "../contexts/CaptainContext";
+import React, { useState } from "react";
 import {
+  ArrowLeft,
   Calendar,
   ChevronUp,
   Clock,
@@ -9,14 +8,12 @@ import {
   Route,
   Timer,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function RideHistory() {
+  const navigation = useNavigate();
   const userData = JSON.parse(localStorage.getItem("userData"));
   const [user, setUser] = useState(userData.data);
-
-  function sortRidesByDate(rides) {
-    return rides.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  }
 
   function classifyAndSortRides(rides) {
     const today = new Date();
@@ -66,7 +63,15 @@ function RideHistory() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-semisemibold mb-4">History</h1>
+      <div className="flex gap-3">
+        <ArrowLeft
+          strokeWidth={3}
+          className="mt-[4px] cursor-pointer"
+          onClick={() => navigation(-1)}
+        />
+        {/* <Heading title={"Edit Profile"} /> */}
+        <h1 className="text-2xl font-semibold mb-4">History</h1>
+      </div>
 
       <div className="h-[90vh] overflow-scroll ">
         <details open className="group">
@@ -74,33 +79,48 @@ function RideHistory() {
             <span>Today</span>
             <ChevronUp className="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-gray-600" />
           </summary>
-          {classifyAndSortRides(user.rides).today.map((ride) => {
-            return <Ride ride={ride} key={ride._id} />;
-          })}
+          {classifyAndSortRides(user.rides).today.length > 0 ? (
+            classifyAndSortRides(user.rides).today.map((ride) => {
+              return <Ride ride={ride} key={ride._id} />;
+            })
+          ) : (
+            <h1 className="text-sm text-center text-zinc-600">
+              No rides found
+            </h1>
+          )}
         </details>
 
-        {classifyAndSortRides(user.rides).yesterday.length > 0 && (
-          <details open className="group">
-            <summary className="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
-              <span>Yesterday</span>
-              <ChevronUp className="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-gray-600" />
-            </summary>
-            {classifyAndSortRides(user.rides).yesterday.map((ride) => {
+        <details open className="group">
+          <summary className="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
+            <span>Yesterday</span>
+            <ChevronUp className="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-gray-600" />
+          </summary>
+          {classifyAndSortRides(user.rides).yesterday.length > 0 ? (
+            classifyAndSortRides(user.rides).yesterday.map((ride) => {
               return <Ride ride={ride} key={ride._id} />;
-            })}
-          </details>
-        )}
-        {classifyAndSortRides(user.rides).earlier.length > 0 && (
-          <details open className="group">
-            <summary className="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
-              <span>Earlier</span>
-              <ChevronUp className="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-gray-600" />
-            </summary>
-            {classifyAndSortRides(user.rides).earlier.map((ride) => {
+            })
+          ) : (
+            <h1 className="text-sm text-center text-zinc-600">
+              No rides found
+            </h1>
+          )}
+        </details>
+
+        <details open className="group">
+          <summary className="flex items-center justify-between cursor-pointer text-gray-800 font-semibold mb-2 select-none">
+            <span>Earlier</span>
+            <ChevronUp className="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-gray-600" />
+          </summary>
+          {classifyAndSortRides(user.rides).earlier.length > 0 ? (
+            classifyAndSortRides(user.rides).earlier.map((ride) => {
               return <Ride ride={ride} key={ride._id} />;
-            })}
-          </details>
-        )}
+            })
+          ) : (
+            <h1 className="text-sm text-center text-zinc-600">
+              No rides found
+            </h1>
+          )}
+        </details>
       </div>
     </div>
   );
@@ -186,7 +206,7 @@ export const Ride = ({ ride }) => {
             <div className="w-3 h-3 rounded-full border-[3px] -mt-1 bg-green-500 border-black"></div>
             <div className="w-3 h-3 rounded-sm border-[3px] -mb-1 bg-red-400 border-black"></div>
           </div>
-          <div className="mx-6 truncate">
+          <div className="ml-7 truncate">
             <h1 className=" text-xs truncate text-zinc-600 ">{ride.pickup}</h1>
             <div className="flex items-center gap-2">
               <div className="bg-zinc-200 w-full h-[2px]"></div>

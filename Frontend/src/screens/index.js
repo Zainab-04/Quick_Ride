@@ -12,6 +12,10 @@ import CaptainHomeScreen from "./CaptainHomeScreen";
 import UserProtectedWrapper from "./UserProtectedWrapper";
 import CaptainProtectedWrapper from "./CaptainProtectedWrapper";
 
+import RideHistory from "./RideHistory";
+
+import UserEditProfile from "./UserEditProfile";
+import CaptainEditProfile from "./CaptainEditProfile";
 
 export {
   GetStarted,
@@ -22,5 +26,8 @@ export {
   UserHomeScreen,
   CaptainHomeScreen,
   UserProtectedWrapper,
-  CaptainProtectedWrapper
+  CaptainProtectedWrapper,
+  RideHistory,
+  UserEditProfile,
+  CaptainEditProfile,
 };

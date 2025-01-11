@@ -25,6 +25,7 @@ function CaptainSignup() {
       },
       email: data.email,
       password: data.password,
+      phone: data.phone,
       vehicle: {
         color: data.color,
         number: data.number,
@@ -81,7 +82,13 @@ function CaptainSignup() {
                   error={errors.lastname}
                 />
               </div>
-
+              <Input
+                label={"Phone Number"}
+                type={"number"}
+                name={"phone"}
+                register={register}
+                error={errors.phone}
+              />
               <Input
                 label={"Email"}
                 type={"email"}
@@ -89,6 +96,7 @@ function CaptainSignup() {
                 register={register}
                 error={errors.email}
               />
+
               <Input
                 label={"Password"}
                 type={"password"}

@@ -27,9 +27,9 @@ const captainSchema = new mongoose.Schema(
       select: false,
     },
     phone: {
-      type: Number,
-      min: 10,
-      max: 10,
+      type: String,
+      minlength: 10,
+      maxlength: 10,
     },
     socketId: {
       type: String,

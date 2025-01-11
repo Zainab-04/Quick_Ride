@@ -11,7 +11,7 @@ module.exports.registerCaptain = asyncHandler(async (req, res) => {
     return res.status(400).json(errors.array());
   }
 
-  const { fullname, email, password, vehicle } = req.body;
+  const { fullname, email, password, phone, vehicle } = req.body;
 
   const alreadyExists = await captainModel.findOne({ email });
 
@@ -24,6 +24,7 @@ module.exports.registerCaptain = asyncHandler(async (req, res) => {
     fullname.lastname,
     email,
     password,
+    phone,
     vehicle.color,
     vehicle.number,
     vehicle.capacity,
@@ -65,17 +66,23 @@ module.exports.captainProfile = asyncHandler(async (req, res) => {
 });
 
 module.exports.updateCaptainProfile = asyncHandler(async (req, res) => {
-  const { newData } = req.body;
+  const errors = validationResult(req);
 
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors.array());
+  }
+
+  const { captainData } = req.body;
   const updatedCaptainData = await captainModel.findOneAndUpdate(
     { email: req.captain.email },
-    newData,
+    captainData,
     { new: true }
   );
 
-  res
-    .status(200)
-    .json({ message: "Profile updated successfully", user: updatedCaptainData });
+  res.status(200).json({
+    message: "Profile updated successfully",
+    user: updatedCaptainData,
+  });
 });
 
 module.exports.logoutCaptain = asyncHandler(async (req, res) => {

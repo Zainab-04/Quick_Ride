@@ -90,7 +90,7 @@ const Vehicle = ({
       </div>
       <div className="h-full w-full ">
         <h1 className="text-lg font-semibold leading-6">{vehicle.name}</h1>
-        <p className="text-xs leading-3 font-semibold">2 mins away • 15:24</p>
+        {/* <p className="text-xs leading-3 font-semibold">2 mins away • 15:24</p> */}
         <p className="text-xs text-gray-800 ">{vehicle.description}</p>
       </div>
       <div className="h-12 w-24">

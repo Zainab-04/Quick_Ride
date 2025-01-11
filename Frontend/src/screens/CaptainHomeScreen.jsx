@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import map from "/map.png";
 import axios from "axios";
 import { useCaptain } from "../contexts/CaptainContext";
-import { User } from "lucide-react";
+import { Phone, User } from "lucide-react";
 import { SocketDataContext } from "../contexts/SocketContext";
 import { NewRide, Sidebar } from "../components";
 
@@ -304,18 +304,20 @@ function CaptainHomeScreen() {
           {/* Driver details */}
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <img
-                className="rounded-full w-10 h-10  object-cover"
-                src="https://images.unsplash.com/photo-1656399910089-b7ead999bf23?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTh8fG1hbGUlMjBwb3J0cmFpdHxlbnwwfHwwfHx8MA%3D%3D"
-                alt="Driver picture"
-              />
+              <div className="my-2 select-none rounded-full w-10 h-10 bg-blue-400 mx-auto flex items-center justify-center">
+                <h1 className="text-lg text-white">
+                  {captain.fullname?.firstname[0]}
+                  {captain.fullname?.lastname[0]}
+                </h1>
+              </div>
 
               <div>
                 <h1 className="text-lg font-semibold leading-6">
                   {captain.fullname.firstname} {captain.fullname.lastname}
                 </h1>
-                <p className="text-xs text-gray-500 ">
-                  {captain.phone || captain.email}
+                <p className="text-xs flex items-center gap-1 text-gray-500 ">
+                  <Phone size={12} />
+                  {captain.phone}
                 </p>
               </div>
             </div>

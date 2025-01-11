@@ -16,7 +16,11 @@ router.post("/login",
     userController.loginUser
 );
 
-router.put("/update", authUser, userController.updateUserProfile);
+router.post("/update", authUser,
+    body("fullname.firstname").isLength({min:2}).withMessage("First name must be at least 2 characters long"),
+    body("fullname.lastname").isLength({min:2}).withMessage("Last name must be at least 2 characters long"),
+    userController.updateUserProfile
+);
 
 router.get("/profile", authUser, userController.userProfile);
 

@@ -10,8 +10,10 @@ import {
   CaptainProtectedWrapper,
   UserSignup,
   CaptainSignup,
+  RideHistory,
+  UserEditProfile,
+  CaptainEditProfile
 } from "./screens/";
-import RideHistory from "./screens/RideHistory";
 
 function App() {
   return (
@@ -30,7 +32,22 @@ function App() {
             />
             <Route path="/login" element={<UserLogin />} />
             <Route path="/signup" element={<UserSignup />} />
-            <Route path="/:user/rides" element={<RideHistory />} />
+            <Route
+              path="/user/edit-profile"
+              element={
+                <UserProtectedWrapper>
+                  <UserEditProfile />
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/user/rides"
+              element={
+                <UserProtectedWrapper>
+                  <RideHistory />
+                </UserProtectedWrapper>
+              }
+            />
 
             <Route
               path="/captain/home"
@@ -42,6 +59,22 @@ function App() {
             />
             <Route path="/captain/login" element={<CaptainLogin />} />
             <Route path="/captain/signup" element={<CaptainSignup />} />
+            <Route
+              path="/captain/edit-profile"
+              element={
+                <CaptainProtectedWrapper>
+                  <CaptainEditProfile />
+                </CaptainProtectedWrapper>
+              }
+            />
+            <Route
+              path="/captain/rides"
+              element={
+                <CaptainProtectedWrapper>
+                  <RideHistory />
+                </CaptainProtectedWrapper>
+              }
+            />
           </Routes>
         </BrowserRouter>
       </div>

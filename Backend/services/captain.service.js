@@ -5,6 +5,7 @@ module.exports.createCaptain = async (
   lastname,
   email,
   password,
+  phone,
   color,
   number,
   capacity,
@@ -23,6 +24,7 @@ module.exports.createCaptain = async (
     },
     email,
     password: hashedPassword,
+    phone,
     vehicle: {
       color,
       number,
