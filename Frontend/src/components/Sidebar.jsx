@@ -50,7 +50,7 @@ function Sidebar() {
       <div
         className={`${
           showSidebar ? " left-0 " : " -left-[100%] "
-        } z-10 duration-300 absolute w-full h-screen bottom-0 bg-white p-4 pt-5 flex flex-col justify-between`}
+        } z-10 duration-300 absolute w-full h-dvh bottom-0 bg-white p-4 pt-5 flex flex-col justify-between`}
       >
         <div className="select-none">
           <h1 className="relative text-2xl font-semibold ">Profile</h1>

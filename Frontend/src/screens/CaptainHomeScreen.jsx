@@ -55,6 +55,9 @@ function CaptainHomeScreen() {
   );
 
   const [otp, setOtp] = useState("");
+  const [messages, setMessages] = useState(
+    JSON.parse(localStorage.getItem("messages")) || []
+  );
 
   // Panels
   const [showCaptainDetailsPanel, setShowCaptainDetailsPanel] = useState(true);
@@ -210,7 +213,22 @@ function CaptainHomeScreen() {
     });
   }, [captain]);
 
-  
+  useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
+    socket.emit("join-room", newRide._id);
+
+    socket.on("receiveMessage", async (msg) => {
+      // console.log("Received message: ", msg);
+      setMessages((prev) => [...prev, { msg, by: "other" }]);
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [newRide]);
 
   useEffect(() => {
     localStorage.setItem("rideDetails", JSON.stringify(newRide));

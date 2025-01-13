@@ -16,7 +16,9 @@ function UserHomeScreen() {
   const token = localStorage.getItem("token"); // this token is in use
   const { socket } = useContext(SocketDataContext);
   const { user } = useUser();
-
+  const [messages, setMessages] = useState(
+    JSON.parse(localStorage.getItem("messages")) || []
+  );
   const [loading, setLoading] = useState(false);
   const [selectedInput, setSelectedInput] = useState("pickup");
   const [locationSuggestion, setLocationSuggestion] = useState([]);
@@ -285,6 +287,22 @@ function UserHomeScreen() {
     localStorage.setItem("panelDetails", JSON.stringify(panelDetails));
   }, [showFindTripPanel, showSelectVehiclePanel, showRideDetailsPanel]);
 
+  useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
+    socket.emit("join-room", confirmedRideData?._id);
+
+    socket.on("receiveMessage", (msg) => {
+      // console.log("Received message: ", msg);
+      setMessages((prev) => [...prev, { msg, by: "other" }]);
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [confirmedRideData]);
   return (
     <div
       className="relative w-full h-dvh bg-contain"

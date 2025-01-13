@@ -64,17 +64,21 @@ function ChatScreen() {
 
     socket.emit("join-room", rideId);
 
-    socket.on("receiveMessage", async (msg) => {
-      console.log("Received message: ", msg);
+    socket.on("receiveMessage", (msg) => {
+      // console.log("Received message: ", msg);
       setMessages((prev) => [...prev, { msg, by: "other" }]);
       scrollToBottom();
     });
 
     scrollToBottom();
+
+    return () => {
+      socket.off("receiveMessage");
+    };
   }, []);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-dvh">
       {/* header */}
       <div className="flex h-fit items-center p-3 bg-green-50 border-b-2 border-b-green-600 gap-2">
         <ArrowLeft
@@ -97,6 +101,14 @@ function ChatScreen() {
       </div>
       <div className="overflow-scroll  h-full" ref={scrollableDivRef}>
         <div className="flex flex-col justify-end  w-full p-3">
+          <button
+            onClick={() => {
+              socket.emit("click", "clicked");
+              console.log("emitted");
+            }}
+          >
+            click
+          </button>
           {messages.length > 0 &&
             messages.map((message, i) => {
               return (
