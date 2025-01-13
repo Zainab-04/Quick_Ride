@@ -6,6 +6,26 @@ import { Phone, User } from "lucide-react";
 import { SocketDataContext } from "../contexts/SocketContext";
 import { NewRide, Sidebar } from "../components";
 
+const defaultRideData = {
+  user: {
+    fullname: {
+      firstname: "No",
+      lastname: "User",
+    },
+    _id: "",
+    email: "example@gmail.com",
+    rides: [],
+  },
+  pickup: "Place, City, State, Country",
+  destination: "Place, City, State, Country",
+  fare: 0,
+  vehicle: "car",
+  status: "pending",
+  duration: 0,
+  distance: 0,
+  _id: "123456789012345678901234",
+};
+
 function CaptainHomeScreen() {
   const token = localStorage.getItem("token");
 
@@ -30,33 +50,20 @@ function CaptainHomeScreen() {
     cancelled: 0,
     distanceTravelled: 0,
   });
-
-  const [newRide, setNewRide] = useState({
-    user: {
-      fullname: {
-        firstname: "No",
-        lastname: "User",
-      },
-      _id: "",
-      email: "example@gmail.com",
-      rides: [],
-    },
-    pickup: "Place, City, State, Country",
-    destination: "Place, City, State, Country",
-    fare: 0,
-    vehicle: "car",
-    status: "pending",
-    duration: 0,
-    distance: 0,
-    _id: "123456789012345678901234",
-  });
+  const [newRide, setNewRide] = useState(
+    JSON.parse(localStorage.getItem("rideDetails")) || defaultRideData
+  );
 
   const [otp, setOtp] = useState("");
 
   // Panels
   const [showCaptainDetailsPanel, setShowCaptainDetailsPanel] = useState(true);
-  const [showNewRidePanel, setShowNewRidePanel] = useState(false);
-  const [showBtn, setShowBtn] = useState("accept");
+  const [showNewRidePanel, setShowNewRidePanel] = useState(
+    JSON.parse(localStorage.getItem("showPanel")) || false
+  );
+  const [showBtn, setShowBtn] = useState(
+    JSON.parse(localStorage.getItem("showBtn")) || "accept"
+  );
 
   const acceptRide = async () => {
     try {
@@ -133,25 +140,9 @@ function CaptainHomeScreen() {
         setLoading(false);
         setShowCaptainDetailsPanel(true);
         setShowNewRidePanel(false);
-        setNewRide({
-          user: {
-            fullname: {
-              firstname: "No",
-              lastname: "User",
-            },
-            _id: "",
-            email: "example@gmail.com",
-            rides: [],
-          },
-          pickup: "Place, City, State, Country",
-          destination: "Place, City, State, Country",
-          fare: 0,
-          vehicle: "car",
-          status: "pending",
-          duration: 0,
-          distance: 0,
-          _id: "123456789012345678901234",
-        });
+        setNewRide(defaultRideData);
+        localStorage.removeItem("rideDetails");
+        localStorage.removeItem("showPanel");
       }
     } catch (err) {
       setLoading(false);
@@ -219,6 +210,17 @@ function CaptainHomeScreen() {
     });
   }, [captain]);
 
+  
+
+  useEffect(() => {
+    localStorage.setItem("rideDetails", JSON.stringify(newRide));
+  }, [newRide]);
+
+  useEffect(() => {
+    localStorage.setItem("showPanel", JSON.stringify(showNewRidePanel));
+    localStorage.setItem("showBtn", JSON.stringify(showBtn));
+  }, [showNewRidePanel, showBtn]);
+
   const calculateEarnings = () => {
     let Totalearnings = 0;
     let Todaysearning = 0;
@@ -270,10 +272,6 @@ function CaptainHomeScreen() {
   useEffect(() => {
     calculateEarnings();
   }, [captain]);
-
-  // useEffect(() => {
-  //   console.log(newRide);
-  // }, [newRide]);
 
   useEffect(() => {
     if (mapLocation.ltd && mapLocation.lng) {

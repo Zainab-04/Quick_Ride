@@ -40,6 +40,14 @@ function initializeSocket(server) {
       });
     });
 
+    socket.on("join-room", (roomId)=>{
+      socket.join(roomId);
+      console.log(`${socket.id} joined room: ${roomId}`);
+    })
+    socket.on("message", ({rideId,msg}) => {
+      socket.to(rideId).emit("receiveMessage", msg);
+    });
+
     socket.on("disconnect", () => {
       console.log(`Client disconnected: ${socket.id}`);
     });
@@ -50,7 +58,7 @@ const sendMessageToSocketId = (socketId, messageObject) => {
   console.log(messageObject);
 
   if (io) {
-    console.log("message sent to: " ,socketId)
+    console.log("message sent to: ", socketId);
     io.to(socketId).emit(messageObject.event, messageObject.data);
   } else {
     console.log("Socket.io not initialized.");

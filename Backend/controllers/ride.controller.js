@@ -5,6 +5,38 @@ const { sendMessageToSocketId } = require("../socket");
 const rideModel = require("../models/ride.model");
 const userModel = require("../models/user.model");
 
+module.exports.chatDetails = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const ride = await rideModel
+      .findOne({ _id: id })
+      .populate("user", "socketId fullname phone")
+      .populate("captain", "socketId fullname phone");
+
+    if (!ride) {
+      return res.status(400).json({ message: "Ride not found" });
+    }
+
+    const response = {
+      user: {
+        socketId: ride.user?.socketId,
+        fullname: ride.user?.fullname,
+        phone: ride.user?.phone,
+      },
+      captain: {
+        socketId: ride.captain?.socketId,
+        fullname: ride.captain?.fullname,
+        phone: ride.captain?.phone,
+      }
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports.createRide = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -20,18 +52,17 @@ module.exports.createRide = async (req, res) => {
       destination,
       vehicleType,
     });
-    
-    const user = await userModel.findOne({_id: req.user._id});
-    if(user){
 
+    const user = await userModel.findOne({ _id: req.user._id });
+    if (user) {
       user.rides.push(ride._id);
       await user.save();
     }
-    
+
     res.status(201).json(ride);
 
     const pickupCoordinates = await mapService.getAddressCoordinate(pickup);
-    console.log("Pickup Coordinates", pickupCoordinates)
+    console.log("Pickup Coordinates", pickupCoordinates);
 
     const captainsInRadius = await mapService.getCaptainsInTheRadius(
       pickupCoordinates.ltd,
@@ -46,7 +77,7 @@ module.exports.createRide = async (req, res) => {
       .populate("user");
 
     captainsInRadius.map((captain) => {
-      console.log(captain._id)
+      console.log(captain._id);
       sendMessageToSocketId(captain.socketId, {
         event: "new-ride",
         data: rideWithUser,

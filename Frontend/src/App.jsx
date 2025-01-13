@@ -12,8 +12,9 @@ import {
   CaptainSignup,
   RideHistory,
   UserEditProfile,
-  CaptainEditProfile
+  CaptainEditProfile,
 } from "./screens/";
+import ChatScreen from "./screens/ChatScreen";
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
                 </CaptainProtectedWrapper>
               }
             />
+            <Route path="/:userType/chat/:rideId" element={<ChatScreen />} />
           </Routes>
         </BrowserRouter>
       </div>

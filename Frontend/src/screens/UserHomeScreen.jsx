@@ -6,7 +6,7 @@ import {
   LocationSuggestions,
   SelectVehicle,
   RideDetails,
-  Sidebar
+  Sidebar,
 } from "../components";
 import axios from "axios";
 import debounce from "lodash.debounce";
@@ -27,7 +27,6 @@ function UserHomeScreen() {
   const [pickupLocation, setPickupLocation] = useState("");
   const [destinationLocation, setDestinationLocation] = useState("");
   const [selectedVehicle, setSelectedVehicle] = useState("car");
-  const [distanceTime, setDistanceTime] = useState({});
   const [fare, setFare] = useState({
     auto: 0,
     car: 0,
@@ -36,7 +35,6 @@ function UserHomeScreen() {
   const [confirmedRideData, setConfirmedRideData] = useState(null);
 
   // Panels
-  const [showSidebar, setShowSidebar] = useState(false);
   const [showFindTripPanel, setShowFindTripPanel] = useState(true);
   const [showSelectVehiclePanel, setShowSelectVehiclePanel] = useState(false);
   const [showRideDetailsPanel, setShowRideDetailsPanel] = useState(false);
@@ -99,7 +97,6 @@ function UserHomeScreen() {
         }
       );
       console.log(response);
-      setDistanceTime(response.data.distanceTime);
       setFare(response.data.fare);
 
       setShowFindTripPanel(false);
@@ -129,7 +126,14 @@ function UserHomeScreen() {
         }
       );
       console.log(response);
-
+      const rideData = {
+        pickup: pickupLocation,
+        destination: destinationLocation,
+        vehicleType: selectedVehicle,
+        fare: fare,
+        confirmedRideData: confirmedRideData,
+      };
+      localStorage.setItem("rideDetails", JSON.stringify(rideData));
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -137,11 +141,11 @@ function UserHomeScreen() {
     }
   };
 
+  // Set ride details to default values
   const setDefaults = () => {
     setPickupLocation("");
     setDestinationLocation("");
     setSelectedVehicle("car");
-    setDistanceTime({});
     setFare({
       auto: 0,
       car: 0,
@@ -150,6 +154,7 @@ function UserHomeScreen() {
     setConfirmedRideData(null);
   };
 
+  // Update Location
   useEffect(() => {
     const updateLocation = () => {
       if (navigator.geolocation) {
@@ -181,6 +186,7 @@ function UserHomeScreen() {
     updateLocation();
   }, []);
 
+  // Socket Events
   useEffect(() => {
     if (user._id) {
       socket.emit("join", {
@@ -204,12 +210,16 @@ function UserHomeScreen() {
         `https://www.google.com/maps?q=${data.pickup} to ${data.destination}&output=embed`
       );
     });
+
     socket.on("ride-ended", (data) => {
       console.log("Ride Ended");
       setShowRideDetailsPanel(false);
       setShowSelectVehiclePanel(false);
       setShowFindTripPanel(true);
       setDefaults();
+      localStorage.removeItem("rideDetails");
+      localStorage.removeItem("panelDetails");
+
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -225,16 +235,62 @@ function UserHomeScreen() {
     });
   }, [user]);
 
+  // Get ride details
   useEffect(() => {
-    console.log(("Location Updated:", mapLocation));
-  }, [mapLocation]);
+    const storedRideDetails = localStorage.getItem("rideDetails");
+    const storedPanelDetails = localStorage.getItem("panelDetails");
+
+    if (storedRideDetails) {
+      const ride = JSON.parse(storedRideDetails);
+      setPickupLocation(ride.pickup);
+      setDestinationLocation(ride.destination);
+      setSelectedVehicle(ride.vehicleType);
+      setFare(ride.fare);
+      setConfirmedRideData(ride.confirmedRideData);
+    }
+
+    if (storedPanelDetails) {
+      const panels = JSON.parse(storedPanelDetails);
+      setShowFindTripPanel(panels.showFindTripPanel);
+      setShowSelectVehiclePanel(panels.showSelectVehiclePanel);
+      setShowRideDetailsPanel(panels.showRideDetailsPanel);
+    }
+  }, []);
+
+  // Store Ride Details
+  useEffect(() => {
+    const rideData = {
+      pickup: pickupLocation,
+      destination: destinationLocation,
+      vehicleType: selectedVehicle,
+      fare: fare,
+      confirmedRideData: confirmedRideData,
+    };
+    localStorage.setItem("rideDetails", JSON.stringify(rideData));
+  }, [
+    pickupLocation,
+    destinationLocation,
+    selectedVehicle,
+    fare,
+    confirmedRideData,
+  ]);
+
+  // Store panel information
+  useEffect(() => {
+    const panelDetails = {
+      showFindTripPanel,
+      showSelectVehiclePanel,
+      showRideDetailsPanel,
+    };
+    localStorage.setItem("panelDetails", JSON.stringify(panelDetails));
+  }, [showFindTripPanel, showSelectVehiclePanel, showRideDetailsPanel]);
 
   return (
     <div
       className="relative w-full h-dvh bg-contain"
       style={{ backgroundImage: `url(${map})` }}
     >
-      <Sidebar/>
+      <Sidebar />
       <iframe
         src={mapLocation}
         className="absolute map w-full h-[120vh]"

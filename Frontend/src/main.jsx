@@ -8,7 +8,7 @@ import CaptainContext from "./contexts/CaptainContext.jsx";
 import SocketContext from "./contexts/SocketContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
     <SocketContext>
       <UserContext>
         <CaptainContext>
@@ -16,5 +16,5 @@ createRoot(document.getElementById("root")).render(
         </CaptainContext>
       </UserContext>
     </SocketContext>
-  </StrictMode>
+  // </StrictMode>
 );
