@@ -48,26 +48,26 @@ function NewRide({
             <div className="flex items-center gap-3">
               <div className="my-2 select-none rounded-full w-10 h-10 bg-green-500 mx-auto flex items-center justify-center">
                 <h1 className="text-lg text-white">
-                  {rideData.user.fullname?.firstname[0]}
-                  {rideData.user.fullname?.lastname[0]}
+                  {rideData?.user?.fullname?.firstname[0]}
+                  {rideData?.user?.fullname?.lastname[0]}
                 </h1>
               </div>
 
               <div>
                 <h1 className="text-lg font-semibold leading-6">
-                  {rideData.user.fullname.firstname}{" "}
-                  {rideData.user.fullname.lastname}
+                  {rideData?.user?.fullname?.firstname}{" "}
+                  {rideData?.user?.fullname?.lastname}
                 </h1>
                 <p className="text-xs text-gray-500 ">
-                  {rideData.user.phone || rideData.user.email}
+                  {rideData?.user?.phone || rideData?.user?.email}
                 </p>
               </div>
             </div>
 
             <div className="text-right">
-              <h1 className="font-semibold text-lg">₹ {rideData.fare}</h1>
+              <h1 className="font-semibold text-lg">₹ {rideData?.fare}</h1>
               <p className="text-xs text-gray-500 ">
-                {(Number(rideData.distance.toFixed(2)) / 1000).toFixed(1)} Km
+                {(Number(rideData?.distance.toFixed(2)) / 1000).toFixed(1)} Km
               </p>
             </div>
           </div>

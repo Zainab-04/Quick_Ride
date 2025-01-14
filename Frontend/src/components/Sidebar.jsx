@@ -29,7 +29,12 @@ function Sidebar() {
       );
 
       localStorage.removeItem("token");
-      localStorage.removeItem("userType");
+      localStorage.removeItem("userData");
+      localStorage.removeItem("messages");
+      localStorage.removeItem("rideDetails");
+      localStorage.removeItem("panelDetails");
+      localStorage.removeItem("showPanel");
+      localStorage.removeItem("showBtn");
       navigate("/");
     } catch (error) {
       console.log("Error getting logged out", error);
