@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const SERVER_URL = process.env.SERVER_URL;
-const interval = 600000;
+const interval = 840000; // 14 Minutes
 
 function reloadWebsite() {
   axios

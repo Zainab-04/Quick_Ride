@@ -153,48 +153,47 @@ function CaptainHomeScreen() {
     }
   };
 
-  useEffect(() => {
-    const updateLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            // console.log(position);
-            setRiderLocation({
+  const updateLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // console.log(position);
+          setRiderLocation({
+            ltd: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+
+          setMapLocation(
+            `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}&output=embed`
+          );
+          socket.emit("update-location-captain", {
+            userId: captain._id,
+            location: {
               ltd: position.coords.latitude,
               lng: position.coords.longitude,
-            });
-
-            setMapLocation(
-              `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}&output=embed`
-            );
-            socket.emit("update-location-captain", {
-              userId: captain._id,
-              location: {
-                ltd: position.coords.latitude,
-                lng: position.coords.longitude,
-              },
-            });
-          },
-          (error) => {
-            console.error("Error fetching position:", error);
-            switch (error.code) {
-              case error.PERMISSION_DENIED:
-                console.error("User denied the request for Geolocation.");
-                break;
-              case error.POSITION_UNAVAILABLE:
-                console.error("Location information is unavailable.");
-                break;
-              case error.TIMEOUT:
-                console.error("The request to get user location timed out.");
-                break;
-              default:
-                console.error("An unknown error occurred.");
-            }
+            },
+          });
+        },
+        (error) => {
+          console.error("Error fetching position:", error);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              console.error("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              console.error("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              console.error("The request to get user location timed out.");
+              break;
+            default:
+              console.error("An unknown error occurred.");
           }
-        );
-      }
-    };
-
+        }
+      );
+    }
+  };
+  useEffect(() => {
     if (captain._id) {
       socket.emit("join", {
         userId: captain._id,
@@ -210,6 +209,18 @@ function CaptainHomeScreen() {
       setShowBtn("accept");
       setNewRide(data);
       setShowNewRidePanel(true);
+    });
+
+    socket.on("ride-cancelled", (data) => {
+      console.log("Ride cancelled", data);
+      updateLocation();
+      setShowBtn("accept");
+      setLoading(false);
+      setShowCaptainDetailsPanel(true);
+      setShowNewRidePanel(false);
+      setNewRide(defaultRideData);
+      localStorage.removeItem("rideDetails");
+      localStorage.removeItem("showPanel");
     });
   }, [captain]);
 

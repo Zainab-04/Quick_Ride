@@ -206,7 +206,7 @@ export const Ride = ({ ride }) => {
             <div className="w-3 h-3 rounded-full border-[3px] -mt-1 bg-green-500 border-black"></div>
             <div className="w-3 h-3 rounded-sm border-[3px] -mb-1 bg-red-400 border-black"></div>
           </div>
-          <div className="ml-7 truncate">
+          <div className="ml-7 truncate w-full">
             <h1 className=" text-xs truncate text-zinc-600 ">{ride.pickup}</h1>
             <div className="flex items-center gap-2">
               <div className="bg-zinc-200 w-full h-[2px]"></div>

@@ -19,7 +19,9 @@ function RideDetails({
   setShowPanel,
   showPreviousPanel,
   createRide,
+  cancelRide,
   loading,
+  rideCreated,
   confirmedRideData,
 }) {
   return (
@@ -39,10 +41,14 @@ function RideDetails({
           <ChevronDown strokeWidth={2.5} className="text-zinc-300" />
         </div>
         <div>
-          {/* <h1 className="text-center">Looking for nearby drivers</h1>
+          {rideCreated && !confirmedRideData && (
+            <>
+              <h1 className="text-center">Looking for nearby drivers</h1>
               <div className="overflow-y-hidden py-2 pb-2">
                 <div className="h-1 rounded-full bg-blue-500 animate-ping"></div>
-              </div> */}
+              </div>
+            </>
+          )}
           <div
             className={`flex ${
               confirmedRideData ? " justify-between " : " justify-center "
@@ -160,11 +166,12 @@ function RideDetails({
               </div>
             </div>
           </div>
-          {confirmedRideData ? (
+          {rideCreated || confirmedRideData ? (
             <Button
               title={"Cancel Ride"}
               loading={loading}
               classes={"bg-red-600 "}
+              fun={cancelRide}
             />
           ) : (
             <Button title={"Confirm Ride"} fun={createRide} loading={loading} />

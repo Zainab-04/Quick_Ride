@@ -23,7 +23,7 @@ function UserHomeScreen() {
   const [selectedInput, setSelectedInput] = useState("pickup");
   const [locationSuggestion, setLocationSuggestion] = useState([]);
   const [mapLocation, setMapLocation] = useState("");
-  // `https://www.google.com/maps?q=${null}&output=embed`
+  const [rideCreated, setRideCreated] = useState(false);
 
   // Ride details
   const [pickupLocation, setPickupLocation] = useState("");
@@ -134,15 +134,52 @@ function UserHomeScreen() {
         vehicleType: selectedVehicle,
         fare: fare,
         confirmedRideData: confirmedRideData,
+        _id: response.data._id,
       };
       localStorage.setItem("rideDetails", JSON.stringify(rideData));
       setLoading(false);
+      setRideCreated(true);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   };
 
+  const cancelRide = async () => {
+    const rideDetails = JSON.parse(localStorage.getItem("rideDetails"));
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/ride/cancel?rideId=${
+          rideDetails._id || rideDetails.confirmedRideData._id
+        }`,
+        {
+          pickup: pickupLocation,
+          destination: destinationLocation,
+          vehicleType: selectedVehicle,
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      setLoading(false);
+      updateLocation();
+      setShowRideDetailsPanel(false);
+      setShowSelectVehiclePanel(false);
+      setShowFindTripPanel(true);
+      setDefaults();
+      localStorage.removeItem("rideDetails");
+      localStorage.removeItem("panelDetails");
+      localStorage.removeItem("messages");
+      localStorage.removeItem("showPanel");
+      localStorage.removeItem("showBtn");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
   // Set ride details to default values
   const setDefaults = () => {
     setPickupLocation("");
@@ -154,37 +191,38 @@ function UserHomeScreen() {
       bike: 0,
     });
     setConfirmedRideData(null);
+    setRideCreated(false)
   };
 
   // Update Location
-  useEffect(() => {
-    const updateLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setMapLocation(
-              `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}&output=embed`
-            );
-          },
-          (error) => {
-            console.error("Error fetching position:", error);
-            switch (error.code) {
-              case error.PERMISSION_DENIED:
-                console.error("User denied the request for Geolocation.");
-                break;
-              case error.POSITION_UNAVAILABLE:
-                console.error("Location information is unavailable.");
-                break;
-              case error.TIMEOUT:
-                console.error("The request to get user location timed out.");
-                break;
-              default:
-                console.error("An unknown error occurred.");
-            }
+  const updateLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setMapLocation(
+            `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}&output=embed`
+          );
+        },
+        (error) => {
+          console.error("Error fetching position:", error);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              console.error("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              console.error("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              console.error("The request to get user location timed out.");
+              break;
+            default:
+              console.error("An unknown error occurred.");
           }
-        );
-      }
-    };
+        }
+      );
+    }
+  };
+  useEffect(() => {
     updateLocation();
   }, []);
 
@@ -295,7 +333,6 @@ function UserHomeScreen() {
     socket.emit("join-room", confirmedRideData?._id);
 
     socket.on("receiveMessage", (msg) => {
-      // console.log("Received message: ", msg);
       setMessages((prev) => [...prev, { msg, by: "other" }]);
     });
 
@@ -388,9 +425,10 @@ function UserHomeScreen() {
         setShowPanel={setShowRideDetailsPanel}
         showPreviousPanel={setShowSelectVehiclePanel}
         createRide={createRide}
+        cancelRide={cancelRide}
         loading={loading}
+        rideCreated={rideCreated}
         confirmedRideData={confirmedRideData}
-        // showNextPanel={setShowRideDetailsPanel}
       />
     </div>
   );

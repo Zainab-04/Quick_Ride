@@ -101,14 +101,7 @@ function ChatScreen() {
       </div>
       <div className="overflow-scroll  h-full" ref={scrollableDivRef}>
         <div className="flex flex-col justify-end  w-full p-3">
-          <button
-            onClick={() => {
-              socket.emit("click", "clicked");
-              console.log("emitted");
-            }}
-          >
-            click
-          </button>
+          
           {messages.length > 0 &&
             messages.map((message, i) => {
               return (

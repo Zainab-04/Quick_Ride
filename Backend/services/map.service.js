@@ -71,12 +71,12 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
       throw new Error("Unable to fetch suggestions");
     }
   } catch (err) {
-    console.log(err.message)
+    console.log(err.message);
     throw err;
   }
 };
 
-module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
+module.exports.getCaptainsInTheRadius = async (ltd, lng, radius, vehicleType) => {
   // radius in km
 
   try {
@@ -86,8 +86,8 @@ module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
           $centerSphere: [[ltd, lng], radius / 6371],
         },
       },
+      "vehicle.type": vehicleType,
     });
-    console.log(captains)
     return captains;
   } catch (error) {
     throw new Error("Error in getting captain in radius");

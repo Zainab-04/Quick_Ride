@@ -27,7 +27,7 @@ module.exports.chatDetails = async (req, res) => {
         socketId: ride.captain?.socketId,
         fullname: ride.captain?.fullname,
         phone: ride.captain?.phone,
-      }
+      },
     };
 
     res.status(200).json(response);
@@ -67,7 +67,8 @@ module.exports.createRide = async (req, res) => {
     const captainsInRadius = await mapService.getCaptainsInTheRadius(
       pickupCoordinates.ltd,
       pickupCoordinates.lng,
-      4
+      4,
+      vehicleType
     );
 
     ride.otp = "";
@@ -174,6 +175,43 @@ module.exports.endRide = async (req, res) => {
       data: ride,
     });
 
+    return res.status(200).json(ride);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports.cancelRide = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { rideId } = req.query;
+
+  try {
+    const ride = await rideModel.findOneAndUpdate(
+      { _id: rideId },
+      {
+        status: "cancelled",
+      },
+      { new: true }
+    );
+    
+    const pickupCoordinates = await mapService.getAddressCoordinate(ride.pickup);
+    const captainsInRadius = await mapService.getCaptainsInTheRadius(
+      pickupCoordinates.ltd,
+      pickupCoordinates.lng,
+      4,
+      ride.vehicle
+    );
+
+    captainsInRadius.map((captain) => {
+      sendMessageToSocketId(captain.socketId, {
+        event: "ride-cancelled",
+        data: ride,
+      });
+    });
     return res.status(200).json(ride);
   } catch (err) {
     return res.status(500).json({ message: err.message });
