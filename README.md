@@ -1,7 +1,5 @@
 # QuickRide - Full Stack Ride Booking Application
 
-![Logo](https://i.ibb.co/Bf04Hpd/Readme-thumbnail-from-JS-Mastery.png)
-
 ## 📋 <a name="table">Table of Contents</a>
 
 1. 📃 [Introduction](#introduction)
@@ -14,7 +12,7 @@
 
 ## <a name="introduction">📃Introduction</a>
 
-QuickRide is a feature-rich project built using modern web and mobile technologies. It replicates the core functionalities of the Uber platform, including **user authentication**, **ride booking**, **real-time location tracking**, **fare calculation** and **real-time communication**. The application features a clean and responsive user interface, ensuring an intuitive user experience. Designed as a learning and portfolio project, it showcases skills in **frontend and backend development, API integration, and real-time features**.
+QuickRide is a feature-rich project built using modern web and mobile technologies. It replicates the core functionalities of the existing ride booking platforms, including **user authentication**, **ride booking**, **real-time location tracking**, **fare calculation** and **real-time communication**. The application features a clean and responsive user interface, ensuring an intuitive user experience. Designed as a learning and portfolio project, it showcases skills in **frontend and backend development, API integration, and real-time features**.
 
 ## <a name="tech-stack">⚙️Tech Stack</a>
 
@@ -82,8 +80,8 @@ QuickRide is a feature-rich project built using modern web and mobile technologi
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/asif-khan-2k19/Uber.git
-cd uber
+git clone https://github.com/asif-khan-2k19/QuickRide.git
+cd quickride
 ```
 
 ### 2. Install Dependencies
@@ -142,7 +140,7 @@ PORT = 3000
 SERVER_URL = http://localhost:3000
 ENVIRONMENT = development
 MONGODB_PROD_URL = <your-mongodb-atlas-connection-string>
-MONGODB_DEV_URL = mongodb://127.0.0.1:27017/uber_clone
+MONGODB_DEV_URL = mongodb://127.0.0.1:27017/quickRide
 JWT_SECRET = <your-json-secret-string>
 GOOGLE_MAPS_API = <your-google-maps-api-key>
 ```
