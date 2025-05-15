@@ -1,4 +1,4 @@
-# Full Stack Uber Clone
+# QuickRide - Full Stack Ride Booking Application
 
 ![Logo](https://i.ibb.co/Bf04Hpd/Readme-thumbnail-from-JS-Mastery.png)
 
@@ -14,7 +14,7 @@
 
 ## <a name="introduction">📃Introduction</a>
 
-This project is a feature-rich **Uber Clone** built using modern web and mobile technologies. It replicates the core functionalities of the Uber platform, including **user authentication**, **ride booking**, **real-time location tracking**, **fare calculation** and **real-time communication**. The application features a clean and responsive user interface, ensuring an intuitive user experience. Designed as a learning and portfolio project, it showcases skills in **frontend and backend development, API integration, and real-time features**.
+QuickRide is a feature-rich project built using modern web and mobile technologies. It replicates the core functionalities of the Uber platform, including **user authentication**, **ride booking**, **real-time location tracking**, **fare calculation** and **real-time communication**. The application features a clean and responsive user interface, ensuring an intuitive user experience. Designed as a learning and portfolio project, it showcases skills in **frontend and backend development, API integration, and real-time features**.
 
 ## <a name="tech-stack">⚙️Tech Stack</a>
 

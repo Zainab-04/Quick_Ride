@@ -77,11 +77,7 @@ function CaptainLogin() {
             Sign up
           </Link>
         </p>
-        {/* <p className="text-xs font-normal text-justify mt-4 text-zinc-400">
-          By proceeding, you consent to get calls, WhatsApp or SMS messages,
-          including by automated means, from Uber and its affiliates to the
-          number provided.
-        </p> */}
+        
       </div>
       <div>
         <Button
