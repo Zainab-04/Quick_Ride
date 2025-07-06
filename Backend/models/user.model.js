@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
     socketId: {
       type: String,
     },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
     rides: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -50,7 +54,7 @@ userSchema.statics.hashPassword = async function (password) {
 };
 
 userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id: this._id, userType: "user" }, process.env.JWT_SECRET, {
     expiresIn: "24h",
   });
 };

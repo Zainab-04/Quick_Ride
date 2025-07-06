@@ -5,6 +5,8 @@ import { Button, Heading, Input } from "../components";
 import axios from "axios";
 import { useUser } from "../contexts/UserContext";
 import { ArrowLeft } from "lucide-react";
+import Console from "../utils/console";
+
 function UserEditProfile() {
   const token = localStorage.getItem("token");
   const [responseError, setResponseError] = useState("");
@@ -26,8 +28,9 @@ function UserEditProfile() {
         firstname: data.firstname,
         lastname: data.lastname,
       },
+      phone: data.phone,
     };
-    console.log(userData);
+    Console.log(userData);
     try {
       setLoading(true);
       const response = await axios.post(
@@ -39,12 +42,12 @@ function UserEditProfile() {
           },
         }
       );
-      console.log(response);
+      Console.log(response);
       navigation("/home");
     } catch (error) {
       setResponseError(error.response.data[0].msg);
-      console.log(error.response);
-      console.log(error);
+      Console.log(error.response);
+      Console.log(error);
     } finally {
       setLoading(false);
     }
@@ -66,15 +69,15 @@ function UserEditProfile() {
           />
           <Heading title={"Edit Profile"} />
         </div>
-        <Input
-          label={"Email"}
-          type={"email"}
-          name={"email"}
-          register={register}
-          error={errors.email}
-          defaultValue={user.email}
-          disabled={true}
-        />
+          <Input
+            label={"Email"}
+            type={"email"}
+            name={"email"}
+            register={register}
+            error={errors.email}
+            defaultValue={user.email}
+            disabled={true}
+          />
         <form onSubmit={handleSubmit(updateUserProfile)}>
           <Input
             label={"First name"}
@@ -89,6 +92,14 @@ function UserEditProfile() {
             register={register}
             error={errors.lastname}
             defaultValue={user.fullname.lastname}
+          />
+          <Input
+            label={"Phone Number"}
+            type={"number"}
+            name={"phone"}
+            register={register}
+            error={errors.phone}
+            defaultValue={user.phone}
           />
           {responseError && (
             <p className="text-sm text-center mb-4 text-red-500">

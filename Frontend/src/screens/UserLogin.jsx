@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Heading, Input } from "../components";
 import axios from "axios";
+import Console from "../utils/console";
 
 function UserLogin() {
   const [responseError, setResponseError] = useState("");
@@ -22,7 +23,7 @@ function UserLogin() {
         `${import.meta.env.VITE_SERVER_URL}/user/login`,
         data
       );
-      console.log(response);
+      Console.log(response);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userData", JSON.stringify({
         type: "user",
@@ -31,7 +32,7 @@ function UserLogin() {
       navigation("/home");
     } catch (error) {
       setResponseError(error.response.data.message);
-      console.log(error);
+      Console.log(error);
     } finally {
       setLoading(false);
     }
@@ -45,7 +46,7 @@ function UserLogin() {
   return (
     <div className="w-full h-dvh flex flex-col justify-between p-4 pt-6">
       <div>
-        <Heading title={"User Login"} />
+        <Heading title={"User Login🧑🏻"} />
         <form onSubmit={handleSubmit(loginUser)}>
           <Input
             label={"Email"}
@@ -84,7 +85,7 @@ function UserLogin() {
           type={"link"}
           path={"/captain/login"}
           title={"Login as Captain"}
-          classes={"bg-green-500"}
+          classes={"bg-orange-500"}
         />
         <p className="text-xs font-normal text-center self-end mt-6">
           This site is protected by reCAPTCHA and the Google{" "}

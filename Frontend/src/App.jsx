@@ -15,6 +15,8 @@ import {
   CaptainEditProfile,
 } from "./screens/";
 import ChatScreen from "./screens/ChatScreen";
+import VerifyEmail from "./screens/VerifyEmail";
+import Error from "./screens/Error";
 
 function App() {
   return (
@@ -77,6 +79,8 @@ function App() {
               }
             />
             <Route path="/:userType/chat/:rideId" element={<ChatScreen />} />
+            <Route path="/:userType/verify-email/" element={<VerifyEmail />} />
+            <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>
       </div>

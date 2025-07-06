@@ -9,21 +9,21 @@ function CaptainContext({ children }) {
     userData?.type == "captain"
       ? userData.data
       : {
-          email: "",
-          fullname: {
-            firstname: "",
-            lastname: "",
-          },
-          vehicle: {
-            color: "",
-            number: "",
-            capacity: 0,
-            type: "",
-          },
-          // _id: "",
-          rides: [],
-          status: "inactive",
-        }
+        email: "",
+        fullname: {
+          firstname: "",
+          lastname: "",
+        },
+        vehicle: {
+          color: "",
+          number: "",
+          capacity: 0,
+          type: "",
+        },
+        // _id: "",
+        rides: [],
+        status: "inactive",
+      }
   );
 
   return (

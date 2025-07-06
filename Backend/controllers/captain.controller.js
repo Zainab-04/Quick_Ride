@@ -37,6 +37,29 @@ module.exports.registerCaptain = asyncHandler(async (req, res) => {
     .json({ message: "Captain registered successfully", token, captain });
 });
 
+module.exports.verifyEmail = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors.array());
+  }
+
+  const captain = req.captain;
+
+  if (captain.emailVerified) {
+    return res.status(400).json({ message: "Email already verified" });
+  }
+
+  const updatedCaptain = await captainModel.findByIdAndUpdate(
+    captain._id,
+    { emailVerified: true },
+    { new: true }
+  );
+  if (updatedCaptain)
+    return res.status(200).json({
+      message: "Email verified successfully",
+    });
+});
+
 module.exports.loginCaptain = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

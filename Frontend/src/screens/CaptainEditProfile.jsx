@@ -5,6 +5,7 @@ import { Button, Heading, Input } from "../components";
 import axios from "axios";
 import { useCaptain } from "../contexts/CaptainContext";
 import { ArrowLeft } from "lucide-react";
+import Console from "../utils/console";
 
 function CaptainEditProfile() {
   const token = localStorage.getItem("token");
@@ -35,7 +36,7 @@ function CaptainEditProfile() {
         type: data.type.toLowerCase(),
       },
     };
-    console.log(captainData);
+    Console.log(captainData);
     try {
       setLoading(true);
       const response = await axios.post(
@@ -47,12 +48,12 @@ function CaptainEditProfile() {
           },
         }
       );
-      console.log(response);
+      Console.log(response);
       navigation("/captain/home");
     } catch (error) {
       setResponseError(error.response.data[0].msg);
-      console.log(error.response);
-      console.log(error);
+      Console.log(error.response);
+      Console.log(error);
     } finally {
       setLoading(false);
     }

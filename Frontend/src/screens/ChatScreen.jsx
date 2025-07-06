@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import { SocketDataContext } from "../contexts/SocketContext";
+import Console from "../utils/console";
 
 function ChatScreen() {
   const { rideId, userType } = useParams();
@@ -43,7 +44,7 @@ function ChatScreen() {
       };
       setSocketID(socketIds);
     } catch (error) {
-      console.log("No such ride exists.");
+      Console.log("No such ride exists.");
     }
   };
 
@@ -65,7 +66,7 @@ function ChatScreen() {
     socket.emit("join-room", rideId);
 
     socket.on("receiveMessage", (msg) => {
-      // console.log("Received message: ", msg);
+      // Console.log("Received message: ", msg);
       setMessages((prev) => [...prev, { msg, by: "other" }]);
       scrollToBottom();
     });

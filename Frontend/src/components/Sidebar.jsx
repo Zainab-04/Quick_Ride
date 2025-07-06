@@ -4,6 +4,8 @@ import { ChevronRight, CircleUserRound, History, Menu, X } from "lucide-react";
 import Button from "./Button";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Console from "../utils/console";
+
 function Sidebar() {
   const token = localStorage.getItem("token");
   const [showSidebar, setShowSidebar] = useState(false);
@@ -37,7 +39,7 @@ function Sidebar() {
       localStorage.removeItem("showBtn");
       navigate("/");
     } catch (error) {
-      console.log("Error getting logged out", error);
+      Console.log("Error getting logged out", error);
     }
   };
   return (
@@ -101,7 +103,7 @@ function Sidebar() {
           </Link>
         </div>
 
-        <Button title={"Logout"} classes={"bg-red-500"} fun={logout} />
+        <Button title={"Logout"} classes={"bg-red-600"} fun={logout} />
       </div>
     </>
   );

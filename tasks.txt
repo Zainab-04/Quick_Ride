@@ -1,0 +1,21 @@
+FEAT:
+- Email Validation
+- Add Mini-Metro
+
+IMPROVEMENTS:
+- Microservice Architecture
+- Google Maps API
+
+FIX:
+- Storing Chat
+- Ride Map sometimes not work properly
+- Debounce
+- Enable Location suggestions
+
+SECURITY
+- JWT - Session hijacking concern
+
+UPDATES DONE:
+- Added emoji to user and captain login and signup pages
+- changed Login and signup button colors to orange for captain pages.
+- Added Phone number field for user also.

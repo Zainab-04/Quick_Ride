@@ -5,14 +5,16 @@ export const SocketDataContext = createContext();
 
 const socket = io(`${import.meta.env.VITE_SERVER_URL}`); // Replace with your server URL
 
+import Console from "../utils/console";
+
 function SocketContext({ children }) {
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("Connected to server");
+      Console.log("Connected to server");
     });
 
     socket.on("disconnect", () => {
-      console.log("Disconnected from server");
+      Console.log("Disconnected from server");
     });
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useUser } from "../contexts/UserContext";
 import map from "/map.png";
 import {
@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import debounce from "lodash.debounce";
 import { SocketDataContext } from "../contexts/SocketContext";
+import Console from "../utils/console";
 
 function UserHomeScreen() {
   const token = localStorage.getItem("token"); // this token is in use
@@ -35,6 +36,7 @@ function UserHomeScreen() {
     bike: 0,
   });
   const [confirmedRideData, setConfirmedRideData] = useState(null);
+  const rideTimeout = useRef(null);
 
   // Panels
   const [showFindTripPanel, setShowFindTripPanel] = useState(true);
@@ -55,13 +57,13 @@ function UserHomeScreen() {
               },
             }
           );
-          console.log(response);
+          Console.log(response.data);
           setLocationSuggestion(response.data);
         } catch (error) {
-          console.log(error);
+          Console.error(error);
         }
       }
-    }, 500),
+    }, 700),
     []
   );
 
@@ -74,7 +76,9 @@ function UserHomeScreen() {
       setDestinationLocation(value);
     }
 
-    // handleLocationChange(value, token);
+    if (import.meta.env.VITE_ENVIRONMENT === "deployment") {
+      handleLocationChange(value, token);
+    }
 
     if (e.target.value.length < 3) {
       setLocationSuggestion([]);
@@ -82,7 +86,7 @@ function UserHomeScreen() {
   };
 
   const getDistanceAndFare = async (pickupLocation, destinationLocation) => {
-    console.log(pickupLocation, destinationLocation);
+    Console.log(pickupLocation, destinationLocation);
     try {
       setLoading(true);
       setMapLocation(
@@ -98,7 +102,7 @@ function UserHomeScreen() {
           },
         }
       );
-      console.log(response);
+      Console.log(response);
       setFare(response.data.fare);
 
       setShowFindTripPanel(false);
@@ -106,7 +110,7 @@ function UserHomeScreen() {
       setLocationSuggestion([]);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      Console.log(error);
       setLoading(false);
     }
   };
@@ -127,7 +131,7 @@ function UserHomeScreen() {
           },
         }
       );
-      console.log(response);
+      Console.log(response);
       const rideData = {
         pickup: pickupLocation,
         destination: destinationLocation,
@@ -139,8 +143,15 @@ function UserHomeScreen() {
       localStorage.setItem("rideDetails", JSON.stringify(rideData));
       setLoading(false);
       setRideCreated(true);
+
+      // Automatically cancel the ride after 15 seconds
+      rideTimeout.current = setTimeout(() => {
+        cancelRide();
+      }, 15000);
+      Console.log("Timeout: ", rideTimeout);
+      setRideTimeout(rideTimeout);
     } catch (error) {
-      console.log(error);
+      Console.log(error);
       setLoading(false);
     }
   };
@@ -176,7 +187,7 @@ function UserHomeScreen() {
       localStorage.removeItem("showPanel");
       localStorage.removeItem("showBtn");
     } catch (error) {
-      console.log(error);
+      Console.log(error);
       setLoading(false);
     }
   };
@@ -191,7 +202,7 @@ function UserHomeScreen() {
       bike: 0,
     });
     setConfirmedRideData(null);
-    setRideCreated(false)
+    setRideCreated(false);
   };
 
   // Update Location
@@ -222,6 +233,8 @@ function UserHomeScreen() {
       );
     }
   };
+
+  // Update Location
   useEffect(() => {
     updateLocation();
   }, []);
@@ -236,8 +249,11 @@ function UserHomeScreen() {
     }
 
     socket.on("ride-confirmed", (data) => {
-      console.log("Ride Confirmed");
-      console.log(data.captain.location);
+      Console.log("Clearing Timeout", rideTimeout);
+      clearTimeout(rideTimeout.current);
+      Console.log("Cleared Timeout");
+      Console.log("Ride Confirmed");
+      Console.log(data.captain.location);
       setMapLocation(
         `https://www.google.com/maps?q=${data.captain.location.ltd},${data.captain.location.lng} to ${pickupLocation}&output=embed`
       );
@@ -245,14 +261,14 @@ function UserHomeScreen() {
     });
 
     socket.on("ride-started", (data) => {
-      console.log("Ride started");
+      Console.log("Ride started");
       setMapLocation(
         `https://www.google.com/maps?q=${data.pickup} to ${data.destination}&output=embed`
       );
     });
 
     socket.on("ride-ended", (data) => {
-      console.log("Ride Ended");
+      Console.log("Ride Ended");
       setShowRideDetailsPanel(false);
       setShowSelectVehiclePanel(false);
       setShowFindTripPanel(true);
@@ -340,6 +356,7 @@ function UserHomeScreen() {
       socket.off("receiveMessage");
     };
   }, [confirmedRideData]);
+
   return (
     <div
       className="relative w-full h-dvh bg-contain"

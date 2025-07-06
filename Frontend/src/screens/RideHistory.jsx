@@ -207,13 +207,13 @@ export const Ride = ({ ride }) => {
             <div className="w-3 h-3 rounded-sm border-[3px] -mb-1 bg-red-400 border-black"></div>
           </div>
           <div className="ml-7 truncate w-full">
-            <h1 className=" text-xs truncate text-zinc-600 ">{ride.pickup}</h1>
+            <h1 className=" text-xs truncate text-zinc-600 " title={ride.pickup}>{ride.pickup}</h1>
             <div className="flex items-center gap-2">
               <div className="bg-zinc-200 w-full h-[2px]"></div>
               <h1 className="text-xs text-zinc-500 ">TO</h1>
               <div className="bg-zinc-200 w-full h-[2px]"></div>
             </div>
-            <h1 className=" text-xs truncate text-zinc-600 ">
+            <h1 className=" text-xs truncate text-zinc-600 " title={ride.destination}>
               {ride.destination}
             </h1>
           </div>

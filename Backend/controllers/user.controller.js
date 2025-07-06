@@ -11,7 +11,7 @@ module.exports.registerUser = asyncHandler(async (req, res) => {
     return res.status(400).json(errors.array());
   }
 
-  const { fullname, email, password } = req.body;
+  const { fullname, email, password, phone } = req.body;
 
   const alreadyExists = await userModel.findOne({ email });
 
@@ -23,13 +23,37 @@ module.exports.registerUser = asyncHandler(async (req, res) => {
     fullname.firstname,
     fullname.lastname,
     email,
-    password
+    password,
+    phone
   );
 
   const token = user.generateAuthToken();
   res
     .status(201)
     .json({ message: "User registered successfully", token, user });
+});
+
+module.exports.verifyEmail = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors.array());
+  }
+
+  const user = req.user;
+
+  if (user.emailVerified) {
+    return res.status(400).json({ message: "Email already verified" });
+  }
+
+  const updatedUser = await userModel.findByIdAndUpdate(
+    user._id,
+    { emailVerified: true },
+    { new: true }
+  );
+
+  res.status(200).json({
+    message: "Email verified successfully",
+  });
 });
 
 module.exports.loginUser = asyncHandler(async (req, res) => {
@@ -53,7 +77,28 @@ module.exports.loginUser = asyncHandler(async (req, res) => {
 
   const token = user.generateAuthToken();
   res.cookie("token", token);
-  res.json({ message: "Logged in successfully", token, user });
+  delete user.password;
+  delete user.__v;
+  delete user.createdAt;
+  delete user.updatedAt;
+
+  res.json({
+    message: "Logged in successfully",
+    token,
+    user: {
+      _id: user._id,
+      fullname: {
+        firstname: user.fullname.firstname,
+        lastname: user.fullname.lastname,
+      },
+      email: user.email,
+      phone: user.phone,
+      rides: user.rides,
+      socketId: user.socketId,
+
+      emailVerified: user.emailVerified,
+    },
+  });
 });
 
 module.exports.userProfile = asyncHandler(async (req, res) => {

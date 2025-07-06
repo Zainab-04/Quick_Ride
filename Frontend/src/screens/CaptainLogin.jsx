@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Heading, Input } from "../components";
 import axios from "axios";
+import Console from "../utils/console";
 
 function CaptainLogin() {
   const [responseError, setResponseError] = useState("");
@@ -22,7 +23,7 @@ function CaptainLogin() {
         `${import.meta.env.VITE_SERVER_URL}/captain/login`,
         data
       );
-      console.log(response);
+      Console.log(response);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userData", JSON.stringify({
         type: "captain",
@@ -31,7 +32,7 @@ function CaptainLogin() {
       navigation("/captain/home");
     } catch (error) {
       setResponseError(error.response.data.message);
-      console.log(error);
+      Console.log(error);
     } finally {
       setLoading(false);
     }
@@ -45,7 +46,7 @@ function CaptainLogin() {
   return (
     <div className="w-full h-dvh flex flex-col justify-between p-4 pt-6">
       <div>
-        <Heading title={"Captain Login"} />
+        <Heading title={"Captain Login🚕"} />
         <form onSubmit={handleSubmit(loginCaptain)}>
           <Input
             label={"Email"}

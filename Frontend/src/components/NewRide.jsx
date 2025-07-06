@@ -21,6 +21,7 @@ function NewRide({
   acceptRide,
   endRide,
   verifyOTP,
+  error,
 }) {
   const ignoreRide = () => {
     setShowPanel(false);
@@ -34,7 +35,7 @@ function NewRide({
           showPanel ? "bottom-0" : "-bottom-[60%]"
         } transition-all duration-500 absolute bg-white w-full rounded-t-xl p-4 pt-0`}
       >
-        <div
+        {/* <div
           onClick={() => {
             setShowPanel(false);
             showPreviousPanel(true);
@@ -42,9 +43,9 @@ function NewRide({
           className="flex justify-center  py-2 pb-4 cursor-pointer"
         >
           <ChevronDown strokeWidth={2.5} className="text-zinc-300" />
-        </div>
+        </div> */}
         <div>
-          <div className="flex justify-between items-center pb-4">
+          <div className="flex justify-between items-center pb-4 pt-2">
             <div className="flex items-center gap-3">
               <div className="my-2 select-none rounded-full w-10 h-10 bg-green-500 mx-auto flex items-center justify-center">
                 <h1 className="text-lg text-white">
@@ -67,7 +68,7 @@ function NewRide({
             <div className="text-right">
               <h1 className="font-semibold text-lg">₹ {rideData?.fare}</h1>
               <p className="text-xs text-gray-500 ">
-                {(Number(rideData?.distance.toFixed(2)) / 1000).toFixed(1)} Km
+                {(Number(rideData?.distance?.toFixed(2)) / 1000)?.toFixed(1)} Km
               </p>
             </div>
           </div>
@@ -177,6 +178,9 @@ function NewRide({
                 placeholder={"Enter OTP"}
                 className="w-full bg-zinc-100 px-4 py-3 rounded-lg outline-none text-sm mb-2"
               />
+              {error && (
+                <p className="text-red-500 text-xs mb-2 text-center">{error}</p>
+              )}
               <Button title={"Verify OTP"} loading={loading} fun={verifyOTP} />{" "}
             </>
           ) : (

@@ -5,6 +5,7 @@ import { useCaptain } from "../contexts/CaptainContext";
 import { Phone, User } from "lucide-react";
 import { SocketDataContext } from "../contexts/SocketContext";
 import { NewRide, Sidebar } from "../components";
+import Console from "../utils/console";
 
 const defaultRideData = {
   user: {
@@ -58,6 +59,7 @@ function CaptainHomeScreen() {
   const [messages, setMessages] = useState(
     JSON.parse(localStorage.getItem("messages")) || []
   );
+  const [error, setError] = useState("");
 
   // Panels
   const [showCaptainDetailsPanel, setShowCaptainDetailsPanel] = useState(true);
@@ -86,11 +88,11 @@ function CaptainHomeScreen() {
         setMapLocation(
           `https://www.google.com/maps?q=${riderLocation.ltd},${riderLocation.lng} to ${newRide.pickup}&output=embed`
         );
-        console.log(response);
+        Console.log(response);
       }
     } catch (err) {
       setLoading(false);
-      console.log(err);
+      Console.log(err);
     }
   };
 
@@ -113,11 +115,12 @@ function CaptainHomeScreen() {
         );
         setShowBtn("end-ride");
         setLoading(false);
-        console.log(response);
+        Console.log(response);
       }
     } catch (err) {
       setLoading(false);
-      console.log(err);
+      setError("Invalid OTP");
+      Console.log(err);
     }
   };
 
@@ -149,7 +152,7 @@ function CaptainHomeScreen() {
       }
     } catch (err) {
       setLoading(false);
-      console.log(err);
+      Console.log(err);
     }
   };
 
@@ -157,7 +160,7 @@ function CaptainHomeScreen() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // console.log(position);
+          // Console.log(position);
           setRiderLocation({
             ltd: position.coords.latitude,
             lng: position.coords.longitude,
@@ -205,14 +208,14 @@ function CaptainHomeScreen() {
     }
 
     socket.on("new-ride", (data) => {
-      console.log("New Ride available:", data);
+      Console.log("New Ride available:", data);
       setShowBtn("accept");
       setNewRide(data);
       setShowNewRidePanel(true);
     });
 
     socket.on("ride-cancelled", (data) => {
-      console.log("Ride cancelled", data);
+      Console.log("Ride cancelled", data);
       updateLocation();
       setShowBtn("accept");
       setLoading(false);
@@ -232,7 +235,7 @@ function CaptainHomeScreen() {
     socket.emit("join-room", newRide._id);
 
     socket.on("receiveMessage", async (msg) => {
-      // console.log("Received message: ", msg);
+      // Console.log("Received message: ", msg);
       setMessages((prev) => [...prev, { msg, by: "other" }]);
     });
 
@@ -304,12 +307,12 @@ function CaptainHomeScreen() {
 
   useEffect(() => {
     if (mapLocation.ltd && mapLocation.lng) {
-      console.log(mapLocation);
+      Console.log(mapLocation);
     }
   }, [mapLocation]);
 
   useEffect(() => {
-    if (socket.id) console.log("socket id:", socket.id);
+    if (socket.id) Console.log("socket id:", socket.id);
   }, [socket.id]);
 
   return (
@@ -340,11 +343,11 @@ function CaptainHomeScreen() {
 
               <div>
                 <h1 className="text-lg font-semibold leading-6">
-                  {captain?.fullname.firstname} {captain?.fullname.lastname}
+                  {captain?.fullname?.firstname} {captain?.fullname?.lastname}
                 </h1>
                 <p className="text-xs flex items-center gap-1 text-gray-500 ">
                   <Phone size={12} />
-                  {captain.phone}
+                  {captain?.phone}
                 </p>
               </div>
             </div>
@@ -358,7 +361,7 @@ function CaptainHomeScreen() {
           {/* Ride details */}
           <div className="flex justify-around items-center mt-2 py-4 rounded-lg bg-zinc-800">
             <div className="flex flex-col items-center text-white">
-              <h1 className="mb-1 text-xl">{rides.accepted}</h1>
+              <h1 className="mb-1 text-xl">{rides?.accepted}</h1>
               <p className="text-xs text-gray-400 text-center leading-3">
                 Rides
                 <br />
@@ -366,7 +369,7 @@ function CaptainHomeScreen() {
               </p>
             </div>
             <div className="flex flex-col items-center text-white">
-              <h1 className="mb-1 text-xl">{rides.distanceTravelled}</h1>
+              <h1 className="mb-1 text-xl">{rides?.distanceTravelled}</h1>
               <p className="text-xs text-gray-400 text-center leading-3">
                 Km
                 <br />
@@ -374,7 +377,7 @@ function CaptainHomeScreen() {
               </p>
             </div>
             <div className="flex flex-col items-center text-white">
-              <h1 className="mb-1 text-xl">{rides.cancelled}</h1>
+              <h1 className="mb-1 text-xl">{rides?.cancelled}</h1>
               <p className="text-xs text-gray-400 text-center leading-3">
                 Rides
                 <br />
@@ -387,18 +390,18 @@ function CaptainHomeScreen() {
           <div className="flex justify-between border-2 items-center pl-3 py-2 rounded-lg">
             <div>
               <h1 className="text-lg font-semibold leading-6 tracking-tighter ">
-                {captain.vehicle.number}
+                {captain?.vehicle?.number}
               </h1>
               <p className="text-xs text-gray-500 flex items-center">
-                {captain.vehicle.color} |
-                <User size={12} strokeWidth={2.5} /> {captain.vehicle.capacity}
+                {captain?.vehicle?.color} |
+                <User size={12} strokeWidth={2.5} /> {captain?.vehicle?.capacity}
               </p>
             </div>
 
             <img
               className="rounded-full h-16 scale-x-[-1]"
               src={
-                captain.vehicle.type == "car"
+                captain?.vehicle?.type == "car"
                   ? "/car.png"
                   : `/${captain.vehicle.type}.webp`
               }
@@ -420,6 +423,7 @@ function CaptainHomeScreen() {
         acceptRide={acceptRide}
         verifyOTP={verifyOTP}
         endRide={endRide}
+        error={error}
       />
     </div>
   );

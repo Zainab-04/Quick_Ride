@@ -1,5 +1,7 @@
 import { MapPin } from "lucide-react";
 import React, { useEffect } from "react";
+import Console from "../utils/console";
+
 const locationSuggestions = [
   { name: "Central Park", location: "New York, NY, USA" },
   { name: "Eiffel Tower", location: "Paris, France" },
@@ -24,7 +26,7 @@ function LocationSuggestions({
       {suggestions.map((suggestion, index) => (
         <div
           onClick={() => {
-            console.log(suggestion);
+            Console.log(suggestion);
             if (input == "pickup") {
               setPickupLocation(suggestion);
               setSuggestions([]);

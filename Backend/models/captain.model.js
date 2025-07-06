@@ -75,6 +75,10 @@ const captainSchema = new mongoose.Schema(
         type: Number,
       },
     },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
@@ -84,9 +88,13 @@ captainSchema.statics.hashPassword = async function (password) {
 };
 
 captainSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: "24h",
-  });
+  return jwt.sign(
+    { id: this._id, userType: "captain" },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
 };
 
 captainSchema.methods.comparePassword = async function (password) {

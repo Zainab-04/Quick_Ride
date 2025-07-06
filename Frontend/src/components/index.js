@@ -7,6 +7,7 @@ import RideDetails from "./RideDetails";
 import SelectVehicle from "./SelectVehicle";
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
+import VerifyEmail from "./VerifyEmail";
 
 export {
   Button,
@@ -17,5 +18,6 @@ export {
   RideDetails,
   SelectVehicle,
   Sidebar,
-  Spinner
+  Spinner,
+  VerifyEmail
 };

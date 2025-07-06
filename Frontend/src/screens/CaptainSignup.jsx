@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Heading, Input } from "../components";
 import axios from "axios";
 import { ChevronLeft, ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
+import Console from "../utils/console";
 
 function CaptainSignup() {
   const [responseError, setResponseError] = useState("");
@@ -33,7 +34,7 @@ function CaptainSignup() {
         type: data.type,
       },
     };
-    console.log(captainData);
+    Console.log(captainData);
 
     try {
       setLoading(true);
@@ -41,7 +42,7 @@ function CaptainSignup() {
         `${import.meta.env.VITE_SERVER_URL}/captain/register`,
         captainData
       );
-      console.log(response);
+      Console.log(response);
       localStorage.setItem("token", response.data.token);
       navigation("/captain/home");
     } catch (error) {
@@ -49,7 +50,7 @@ function CaptainSignup() {
         error.response.data[0]?.msg || error.response.data.message
       );
       setShowVehiclePanel(false);
-      console.log(error);
+      Console.log(error);
     } finally {
       setLoading(false);
     }
@@ -64,7 +65,7 @@ function CaptainSignup() {
   return (
     <div className="w-full h-dvh flex flex-col justify-between p-4 pt-6">
       <div>
-        <Heading title={"Captain Sign Up"} />
+        <Heading title={"Captain Sign Up🚕"} />
         <form onSubmit={handleSubmit(signupCaptain)}>
           {!showVehiclePanel && (
             <>

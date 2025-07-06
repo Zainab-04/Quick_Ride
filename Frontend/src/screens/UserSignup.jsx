@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Heading, Input } from "../components";
 import axios from "axios";
+import Console from "../utils/console";
 
 function UserSignup() {
   const [responseError, setResponseError] = useState("");
@@ -23,6 +24,7 @@ function UserSignup() {
       },
       email: data.email,
       password: data.password,
+      phone: data.phone
     };
 
     try {
@@ -31,13 +33,13 @@ function UserSignup() {
         `${import.meta.env.VITE_SERVER_URL}/user/register`,
         userData
       );
-      console.log(response);
+      Console.log(response);
       localStorage.setItem("token", response.data.token);
       navigation("/home");
     } catch (error) {
       setResponseError(error.response.data[0].msg);
-      console.log(error);
-    } finally{
+      Console.log(error);
+    } finally {
       setLoading(false);
     }
   };
@@ -50,7 +52,7 @@ function UserSignup() {
   return (
     <div className="w-full h-dvh flex flex-col justify-between p-4 pt-6">
       <div>
-        <Heading title={"User Sign Up"} />
+        <Heading title={"User Sign Up🧑🏻"} />
         <form onSubmit={handleSubmit(signupUser)}>
           <div className="flex gap-4 -mb-2">
             <Input
@@ -66,7 +68,13 @@ function UserSignup() {
               error={errors.lastname}
             />
           </div>
-
+          <Input
+            label={"Phone Number"}
+            type={"number"}
+            name={"phone"}
+            register={register}
+            error={errors.phone}
+          />
           <Input
             label={"Email"}
             type={"email"}
@@ -100,7 +108,7 @@ function UserSignup() {
           type={"link"}
           path={"/captain/signup"}
           title={"Sign Up as Captain"}
-          classes={"bg-green-500"}
+          classes={"bg-orange-500"}
         />
         <p className="text-xs font-normal text-center self-end mt-6">
           This site is protected by reCAPTCHA and the Google{" "}
