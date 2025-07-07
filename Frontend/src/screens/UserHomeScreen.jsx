@@ -149,7 +149,6 @@ function UserHomeScreen() {
         cancelRide();
       }, 15000);
       Console.log("Timeout: ", rideTimeout);
-      setRideTimeout(rideTimeout);
     } catch (error) {
       Console.log(error);
       setLoading(false);

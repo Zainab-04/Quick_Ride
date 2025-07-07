@@ -29,17 +29,8 @@ function RideDetails({
       <div
         className={`${
           showPanel ? "bottom-0" : "-bottom-[60%]"
-        } transition-all duration-500 absolute bg-white w-full rounded-t-xl p-4 pt-0`}
+        } transition-all duration-500 absolute bg-white w-full rounded-t-xl p-4 pt-2`}
       >
-        <div
-          onClick={() => {
-            setShowPanel(false);
-            showPreviousPanel(true);
-          }}
-          className="flex justify-center  py-2 pb-0 cursor-pointer"
-        >
-          <ChevronDown strokeWidth={2.5} className="text-zinc-300" />
-        </div>
         <div>
           {rideCreated && !confirmedRideData && (
             <>
