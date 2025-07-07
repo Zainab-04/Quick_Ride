@@ -62,7 +62,7 @@ function Sidebar() {
         <div className="select-none">
           <h1 className="relative text-2xl font-semibold ">Profile</h1>
 
-          <div className="leading-3 my-4">
+          <div className="leading-3 mt-8 mb-4">
             <div className="my-2 rounded-full w-24 h-24 bg-blue-400 mx-auto flex items-center justify-center">
               <h1 className="text-5xl text-white">
                 {newUser?.data?.fullname?.firstname[0]}

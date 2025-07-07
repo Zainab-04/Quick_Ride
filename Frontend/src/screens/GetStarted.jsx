@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "../components/index";
 import background from "/get_started_illustration.jpg";
 import { useNavigate } from "react-router-dom";
+import logo from '/logo-quickride.png'
 
 function GetStarted() {
   const navigate = useNavigate();
@@ -21,12 +22,12 @@ function GetStarted() {
       className="flex flex-col justify-between w-full h-full bg-cover bg-center"
       style={{ backgroundImage: `url(${background})` }}
     >
-      {/* <img
-        className="h-6 object-contain m-6 self-start"
+      <img
+        className="h-10 object-contain m-4 self-start"
         src={logo}
         alt="Logo"
-      /> */}
-      <h1 className="m-6 font-semibold text-2xl">QuickRide</h1>
+      />
+      {/* <h1 className="m-6 font-semibold text-2xl">QuickRide</h1> */}
       <div
         className="flex flex-col bg-white p-4 pb-8 gap-8 rounded-t-lg
       "

@@ -76,7 +76,7 @@ function UserHomeScreen() {
       setDestinationLocation(value);
     }
 
-    if (import.meta.env.VITE_ENVIRONMENT === "deployment") {
+    if (import.meta.env.VITE_ENVIRONMENT === "production") {
       handleLocationChange(value, token);
     }
 

@@ -6,76 +6,93 @@ const { sendMail } = require("../services/mail.service");
 
 let mailTemplate = `<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Email Verification</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Roboto, sans-serif;
-      background-color: #f5f7fa;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-    .button {
-      display: inline-block;
-      padding: 12px 24px;
-      background-color: #bde8ff;
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 6px;
-      margin-top: 20px;
-    }
-    
-    a{
-      color: #fff;
-      text-decoration: none;
-    }
-    
-    .footer {
-      font-size: 13px;
-      color: #777;
-      margin-top: 30px;
-      text-align: center;
-    }
-    .link {
-      word-break: break-all;
-      color: #4CAF50;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1 style="text-align: center">QuickRide</h1>
-    <h2>Email Verification Required</h2>
-    <p>Hi there,</p>
-    <p>Thanks for signing up! To start using your account, please verify your email address by clicking the button below.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Email Verification</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Roboto, sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #bde8ff;
+        color: blue;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 6px;
+        margin-top: 10px;
+      }
 
-    <a href="{{verification_link}}" class="button" target="_blank">Verify Email</a>
+      .footer {
+        font-size: 13px;
+        color: #777;
+        margin-top: 30px;
+        text-align: center;
+      }
+      .link {
+        word-break: break-all;
+        color: #4caf50;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div style="display: flex; margin-bottom: 30px; gap: 20px">
+        <img
+          src="https://i.ibb.co/4nhq0Bt1/logo-quickride.png"
+          style="margin: 0px auto; height: 60px"
+          alt="logo-quickride"
+        />
+      </div>
+      <h2>Email Verification Required</h2>
+      <p>Hi there,</p>
+      <p>
+        Thanks for signing up! To start using your account, please verify your
+        email address by clicking the button below.
+      </p>
 
-    <p style="margin-top: 20px;">If the button above doesn’t work, please copy and paste the following link into your browser:</p>
-    <p class="link">{{verification_link}}</p>
+      <a href="{{verification_link}}" class="button" target="_blank"
+        >Verify Email</a
+      >
 
-    <p>This verification link is valid for <strong>15 minutes</strong> only.</p>
+      <p style="margin-top: 20px">
+        If the button above doesn’t work, please copy and paste the following
+        link into your browser:
+      </p>
+      <p class="link">{{verification_link}}</p>
 
-    <p>If you didn’t request this email, you can safely ignore it.</p>
+      <p>
+        This verification link is valid for <strong>15 minutes</strong> only.
+      </p>
 
-    <div class="footer">
-      &mdash; The QuickRide Team<br>
-      <small>Need help? Contact us at <a href="mailto:${process.env.MAIL_USER}">${process.env.MAIL_USER}</a></small>
+      <p>If you didn’t request this email, you can safely ignore it.</p>
+
+      <div class="footer">
+        &mdash; The QuickRide Team<br />
+        <small
+          >Need help? Contact us at
+          <a href="mailto:${process.env.MAIL_USER}"
+            >${process.env.MAIL_USER}</a
+          ></small
+        >
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
+
+
 `;
 
 module.exports.sendVerificationEmail = asyncHandler(async (req, res) => {
