@@ -48,8 +48,7 @@ function UserHomeScreen() {
       if (inputValue.length >= 3) {
         try {
           const response = await axios.get(
-            `${
-              import.meta.env.VITE_SERVER_URL
+            `${import.meta.env.VITE_SERVER_URL
             }/map/get-suggestions?input=${inputValue}`,
             {
               headers: {
@@ -93,8 +92,7 @@ function UserHomeScreen() {
         `https://www.google.com/maps?q=${pickupLocation} to ${destinationLocation}&output=embed`
       );
       const response = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
+        `${import.meta.env.VITE_SERVER_URL
         }/ride/get-fare?pickup=${pickupLocation}&destination=${destinationLocation}`,
         {
           headers: {
@@ -144,11 +142,11 @@ function UserHomeScreen() {
       setLoading(false);
       setRideCreated(true);
 
-      // Automatically cancel the ride after 15 seconds
+      // Automatically cancel the ride after 1.5 minutes
       rideTimeout.current = setTimeout(() => {
         cancelRide();
-      }, 15000);
-      Console.log("Timeout: ", rideTimeout);
+      }, import.meta.env.VITE_RIDE_TIMEOUT);
+      
     } catch (error) {
       Console.log(error);
       setLoading(false);
@@ -160,8 +158,7 @@ function UserHomeScreen() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/ride/cancel?rideId=${
-          rideDetails._id || rideDetails.confirmedRideData._id
+        `${import.meta.env.VITE_SERVER_URL}/ride/cancel?rideId=${rideDetails._id || rideDetails.confirmedRideData._id
         }`,
         {
           pickup: pickupLocation,
