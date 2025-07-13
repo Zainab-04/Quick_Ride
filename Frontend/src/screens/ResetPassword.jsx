@@ -33,13 +33,15 @@ function ResetPassword() {
     }
 
     const resetPassword = async (data) => {
+        if(data.password.length < 8 || data.confirmPassword.length < 8 ){
+            showAlert("Incorrect Password Length", "Password must be at least 8 characters long", 'failure')
+            return;
+        }
         if (data.password !== data.confirmPassword) {
-            console.log(data)
-            showAlert("Passwords Don’t Match", "The password and confirm password fields must be identical. Please re-enter them", 'failure')
+            showAlert("Passwords Mismatch", "The password and confirm password fields must be identical. Please re-enter them", 'failure')
             return;
         }
         try {
-            console.log(data);
             setLoading(true)
             const response = await axios.post(
                 `${import.meta.env.VITE_SERVER_URL}/${userType}/reset-password`,
