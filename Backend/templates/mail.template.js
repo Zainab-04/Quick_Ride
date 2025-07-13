@@ -1,55 +1,3 @@
-// let emailTemplate = `
-
-// <!DOCTYPE html>
-// <html lang="en">
-//   <head>
-//     <meta charset="UTF-8" />
-//     <title>{{title}}</title>
-//   </head>
-//   <body style=" background-color: #ffffff; color: #333; margin: 0; padding: 0px;">
-//     <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px;">
-//       <div style="display: flex; margin-bottom: 30px; gap: 20px;">
-//         <img
-//           src="https://quick-ride-asif.vercel.app/logo-quickride.png"
-//           alt="logo-quickride"
-//           style="margin: 0px auto; height: 60px;"
-//         />
-//       </div>
-
-//       <h2 style="margin-top: 0;">{{title}}</h2>
-//       <p>Hi {{name}},</p>
-
-//       <p>{{message}}</p>
-//       // <div style="display: flex; width: 100%;">
-//       //     <a
-//       //     href="{{cta_link}}"
-//       //     target="_blank"
-//       //     style="display: inline-block; text-align: center; margin: 0px auto; padding: 18px 36px; background-color: #51d56b; text-decoration: none; font-size: 18px; font-weight: bold; border-radius: 6px; margin-top: 10px; color: #ffffff;"
-//       //     >
-//       //     {{cta_text}}
-//       //   </a>
-//       // </div>
-//       // <p style="margin-top: 20px;">
-//       //   If the button above doesn’t work, please copy and paste the following
-//       //   link into your browser:
-//       // </p>
-//       <p style="word-break: break-all; color: #4caf50;">{{cta_link}}</p>
-
-//       <p>{{note}}</p>
-
-//       <div style="font-size: 13px; color: #777; margin-top: 30px; text-align: center;">
-//         &mdash; The QuickRide Team
-//         <br />
-//         <small>
-//           Need help? Contact us at
-//           <a href="mailto:${process.env.MAIL_USER}" style="color: #4caf50;">${process.env.MAIL_USER}</a>
-//         </small>
-//       </div>
-//     </div>
-//   </body>
-// </html>
-// `;
-
 let emailTemplate = `
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +20,7 @@ let emailTemplate = `
       <div style="display: flex; margin-bottom: 30px; gap: 20px">
         <img
           src="https://quick-ride-asif.vercel.app/logo-quickride.png"
-          alt="logo-quickride"
+          alt="QuickRide"
           style="margin: 0px auto; height: 60px"
         />
       </div>

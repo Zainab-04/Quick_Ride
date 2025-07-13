@@ -13,7 +13,6 @@ const allowedParams = ["user", "captain"];
 
 function ResetPassword() {
     const [loading, setLoading] = useState(false);
-    const [response, setResponse] = useState("");
 
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
@@ -50,7 +49,6 @@ function ResetPassword() {
                     password: data.password
                 }
             );
-            setResponse(response.data.message);
             showAlert('Password reset successfully!', response.data.message, 'success');
             Console.log(response);
             setTimeout(() => {
@@ -66,12 +64,6 @@ function ResetPassword() {
             setLoading(false);
         }
     }
-
-    useEffect(() => {
-        if (!token) {
-            setResponse("Invalid verification link.");
-        }
-    }, [token]);
 
     return (
         <div className="w-full h-dvh flex flex-col p-4 pt-6">
@@ -100,7 +92,6 @@ function ResetPassword() {
                     error={errors.confirmPassword}
                 />
                 <Button title={"Reset Password"} loading={loading} type="submit" />
-                {response}
             </form>
         </div>
     )

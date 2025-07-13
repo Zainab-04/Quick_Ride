@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { ChevronRight, CircleUserRound, History, Menu, X } from "lucide-react";
+import { ChevronRight, CircleUserRound, History, KeyRound, Menu, X } from "lucide-react";
 import Button from "./Button";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -55,9 +55,8 @@ function Sidebar() {
 
       {/* Sidebar Component */}
       <div
-        className={`${
-          showSidebar ? " left-0 " : " -left-[100%] "
-        } z-10 duration-300 absolute w-full h-dvh bottom-0 bg-white p-4 pt-5 flex flex-col justify-between`}
+        className={`${showSidebar ? " left-0 " : " -left-[100%] "
+          } z-10 duration-300 absolute w-full h-dvh bottom-0 bg-white p-4 pt-5 flex flex-col justify-between`}
       >
         <div className="select-none">
           <h1 className="relative text-2xl font-semibold ">Profile</h1>
@@ -96,6 +95,18 @@ function Sidebar() {
           >
             <div className="flex gap-3">
               <History /> <h1>Ride History</h1>
+            </div>
+            <div>
+              <ChevronRight />
+            </div>
+          </Link>
+
+          <Link
+            to={`/${newUser?.type}/reset-password?token=${token}`}
+            className="flex items-center justify-between py-4 cursor-pointer hover:bg-zinc-100 rounded-xl px-3"
+          >
+            <div className="flex gap-3">
+              <KeyRound /> <h1>Change Password</h1>
             </div>
             <div>
               <ChevronRight />
