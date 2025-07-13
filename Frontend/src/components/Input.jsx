@@ -1,6 +1,6 @@
 import React from "react";
 
-function Input({ label, type, name,defaultValue, register, error, options, disabled }) {
+function Input({ label, type, name, placeholder, defaultValue, register, error, options, disabled }) {
   return (
     <div className="my-2">
       <h1 className="font-semibold ">{label}</h1>
@@ -22,8 +22,8 @@ function Input({ label, type, name,defaultValue, register, error, options, disab
         <input
           {...register(name)}
           type={type || "text"}
-          placeholder={label}
-          className={`w-full bg-zinc-100 px-4 py-3 rounded-lg outline-none text-sm my-1 ${disabled ? "cursor-not-allowed select-none text-zinc-400" : ""}`}
+          placeholder={placeholder || label}
+          className={`w-full bg-zinc-100 px-4 py-3 rounded-lg outline-none text-sm my-1 ${disabled && "cursor-not-allowed select-none text-zinc-400"}`}
           disabled={disabled}
           defaultValue={defaultValue}
         />

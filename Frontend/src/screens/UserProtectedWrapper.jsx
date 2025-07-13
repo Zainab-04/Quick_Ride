@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
-import VerifyEmail from "../components/VerifyEmail"; 
+import VerifyEmail from "../components/VerifyEmail";
+import Loading from "./Loading";
 
 function UserProtectedWrapper({ children }) {
   const token = localStorage.getItem("token");
@@ -10,7 +11,7 @@ function UserProtectedWrapper({ children }) {
   const { user, setUser } = useUser();
 
   const [loading, setLoading] = useState(true);
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(null);
 
   useEffect(() => {
     if (!token) {
@@ -18,6 +19,7 @@ function UserProtectedWrapper({ children }) {
       return;
     }
 
+    setLoading(true);
     axios
       .get(`${import.meta.env.VITE_SERVER_URL}/user/profile`, {
         headers: {
@@ -32,7 +34,7 @@ function UserProtectedWrapper({ children }) {
             "userData",
             JSON.stringify({ type: "user", data: user })
           );
-          setIsVerified(user.emailVerified); // assuming this is the field in your backend
+          setIsVerified(user.emailVerified);
         }
       })
       .catch(() => {
@@ -45,10 +47,10 @@ function UserProtectedWrapper({ children }) {
       });
   }, [token]);
 
-  if (loading) return null; // or a loading spinner
+  if (loading) return <Loading />;
 
-  if (!isVerified) {
-    return <VerifyEmail user={user} role={"user"} />; // or navigate to /verify-email
+  if (isVerified === false) {
+    return <VerifyEmail user={user} role={"user"} />;
   }
 
   return <>{children}</>;

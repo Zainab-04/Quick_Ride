@@ -3,97 +3,10 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
 const { sendMail } = require("../services/mail.service");
+let { fillTemplate } = require("../templates/mail.template");
 
-let mailTemplate = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Email Verification</title>
-    <style>
-      body {
-        font-family: "Segoe UI", Roboto, sans-serif;
-        background-color: #f5f7fa;
-        color: #333;
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        max-width: 600px;
-        margin: auto;
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 8px;
-      }
-      .button {
-        display: inline-block;
-        padding: 12px 24px;
-        background-color: #bde8ff;
-        color: blue;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 6px;
-        margin-top: 10px;
-      }
-
-      .footer {
-        font-size: 13px;
-        color: #777;
-        margin-top: 30px;
-        text-align: center;
-      }
-      .link {
-        word-break: break-all;
-        color: #4caf50;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div style="display: flex; margin-bottom: 30px; gap: 20px">
-        <img
-          src="https://i.ibb.co/4nhq0Bt1/logo-quickride.png"
-          style="margin: 0px auto; height: 60px"
-          alt="logo-quickride"
-        />
-      </div>
-      <h2>Email Verification Required</h2>
-      <p>Hi there,</p>
-      <p>
-        Thanks for signing up! To start using your account, please verify your
-        email address by clicking the button below.
-      </p>
-
-      <a href="{{verification_link}}" class="button" target="_blank"
-        >Verify Email</a
-      >
-
-      <p style="margin-top: 20px">
-        If the button above doesn’t work, please copy and paste the following
-        link into your browser:
-      </p>
-      <p class="link">{{verification_link}}</p>
-
-      <p>
-        This verification link is valid for <strong>15 minutes</strong> only.
-      </p>
-
-      <p>If you didn’t request this email, you can safely ignore it.</p>
-
-      <div class="footer">
-        &mdash; The QuickRide Team<br />
-        <small
-          >Need help? Contact us at
-          <a href="mailto:${process.env.MAIL_USER}"
-            >${process.env.MAIL_USER}</a
-          ></small
-        >
-      </div>
-    </div>
-  </body>
-</html>
-
-
-`;
+const captainModel = require("../models/captain.model");
+const userModel = require("../models/user.model");
 
 module.exports.sendVerificationEmail = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
@@ -108,11 +21,11 @@ module.exports.sendVerificationEmail = asyncHandler(async (req, res) => {
   } else if (req.userType === "captain") {
     user = req.captain;
   } else {
-    return res.status(400).json({ message: "Invalid user type" });
+    return res.status(400).json({ message: "The email verification link is invalid because of incorrect user type" });
   }
 
   if (user.emailVerified) {
-    return res.status(400).json({ message: "Email already verified" });
+    return res.status(400).json({ message: "Your email is already verified. You may continue using the application." });
   }
 
   const token = jwt.sign(
@@ -126,17 +39,20 @@ module.exports.sendVerificationEmail = asyncHandler(async (req, res) => {
   if (!token) {
     return res
       .status(500)
-      .json({ message: "Failed to generate verification token" });
+      .json({ message: "We're unable to generate a verification link at the moment. Please try again shortly." });
   }
 
   try {
     const verification_link = `${process.env.CLIENT_URL}/${req.userType}/verify-email?token=${token}`;
 
-    // Replace all occurrences of the placeholder
-    const mailHtml = mailTemplate.replace(
-      /{{verification_link}}/g,
-      verification_link
-    );
+    let mailHtml = fillTemplate({
+      title: "Email Verification Required",
+      name: user.fullname.firstname,
+      message: "Thank you for signing up with QuickRide! To complete your registration and activate your account, please verify your email address by clicking the button below.",
+      cta_link: verification_link,
+      cta_text: "Verify Email",
+      note: "For your security, this verification link is valid for only <strong>15 minutes</strong>.  If the link expires, you can request a new one from the login page. <br/>If you did not create a QuickRide account, please disregard this email.",
+    });
 
     const result = await sendMail(
       user.email,
@@ -157,4 +73,65 @@ module.exports.sendVerificationEmail = asyncHandler(async (req, res) => {
       .status(500)
       .json({ message: "Failed to send verification email" });
   }
+});
+
+module.exports.forgotPassword = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors.array());
+  }
+
+  const { email } = req.body;
+  const { userType } = req.params;
+
+  let user = null;
+  if (userType === "user") {
+    user = await userModel.findOne({ email });
+  } else if (userType === "captain") {
+    user = await captainModel.findOne({ email });
+  }
+  if (!user) return res.status(404).json({ message: "User not found. Please check your credentials and try again" });
+
+  const token = jwt.sign(
+    { id: user._id, type: "user" },
+    process.env.JWT_SECRET,
+    { expiresIn: "15m" }
+  );
+
+  const resetLink = `${process.env.CLIENT_URL}/${userType}/reset-password?token=${token}`;
+
+  let mailHtml = fillTemplate({
+    title: "Reset Password",
+    name: user.fullname.firstname,
+    message: "We received a request to reset the password associated with your QuickRide account. If you made this request, please click the button below to proceed.",
+    cta_link: resetLink,
+    cta_text: "Reset Password",
+    note: "If you didn’t request a password reset, you can safely ignore this email. Your current password will remain unchanged. <br/>This verification link is valid for <strong>15 minutes</strong> only.",
+  });
+
+  await sendMail(user.email, "QuickRide - Reset Password", mailHtml);
+
+  res.status(200).json({ message: "Reset password email sent successfully" });
+});
+
+// Reset Password
+module.exports.resetPassword = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json(errors.array());
+
+  const { token, password } = req.body;
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return res.status(400).json({ message: "Invalid or expired token" });
+  }
+
+  const user = await userModel.findById(payload.id);
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  user.password = await userModel.hashPassword(password);
+  await user.save();
+
+  res.status(200).json({ message: "Password reset successfully" });
 });

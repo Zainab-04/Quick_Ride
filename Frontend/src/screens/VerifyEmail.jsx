@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import Console from "../utils/console";
@@ -13,8 +13,8 @@ const VerifyEmail = () => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const verifyEmail = async () => {
 
+  const verifyEmail = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
@@ -63,7 +63,7 @@ const VerifyEmail = () => {
       <p className="my-4">{loading && "Verifying your email..."}</p>
       <Button
         title={"Go to Home"}
-        fun={() => navigate(`/${userType === 'captain' ? 'captain/' : ''}home`)}
+        fun={() => navigate(userType === 'captain' ? '/captain/home' : '/home')}
         disabled={loading}
       />
     </div>

@@ -1,17 +1,17 @@
 import axios from "axios";
-import { useEffect ,useState} from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCaptain } from "../contexts/CaptainContext";
-import Console from "../utils/console";
 import VerifyEmail from "../components/VerifyEmail";
+import Loading from "./Loading";
 
 function CaptainProtectedWrapper({ children }) {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const { captain, setCaptain } = useCaptain();
 
-  const [loading, setLoading] = useState(true);
-  const [isVerified, setIsVerified] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isVerified, setIsVerified] = useState(null);
 
   useEffect(() => {
     if (!token) {
@@ -45,10 +45,10 @@ function CaptainProtectedWrapper({ children }) {
       });
   }, [token]);
 
-  if (loading) return null; // or a loading spinner
+  if (loading) return <Loading />;
 
-  if (!isVerified) {
-    return <VerifyEmail user={captain} role={"captain"} />; // or navigate to /verify-email
+  if (isVerified === false) {
+    return <VerifyEmail user={captain} role={"captain"} />;
   }
 
   return <>{children}</>;

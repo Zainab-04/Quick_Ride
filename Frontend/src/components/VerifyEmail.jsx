@@ -6,12 +6,17 @@ import { ArrowLeft } from "lucide-react";
 import Heading from "./Heading";
 import Button from "./Button";
 import mailImg from "/mail.png";
+import useCooldownTimer from "../hooks/useCooldownTimer";
+import { Alert } from "./Alert";
+import { useAlert } from "../hooks/useAlert";
 
 function VerifyEmail({ user, role }) {
     const navigation = useNavigate();
     const token = localStorage.getItem("token");
     const [loading, setLoading] = useState(false);
-    // console.log(role)
+    const { alert, showAlert, hideAlert } = useAlert();
+    const { timeLeft, isActive, startCooldown } = useCooldownTimer(60000, 'forgot-password-cooldown');
+
     const sendVerificationEmail = async () => {
         setTimeout(() => {
             setLoading(false);
@@ -27,18 +32,32 @@ function VerifyEmail({ user, role }) {
                 }
             );
             if (response.status === 200) {
-                alert("Verification email sent successfully!");
+                showAlert('Verification email sent successfully!', 'Please check your inbox and click on the received link to verify your account', 'success');
+                startCooldown();
             }
         } catch (error) {
-            alert("Error sending verification email. Please try again later.");
+            showAlert('Some error occured', error.response.data.message, 'failure');
             Console.error("Error sending verification email:", error);
         } finally {
             setLoading(false);
         }
     };
 
+    const getButtonTitle = () => {
+        if (isActive) {
+            return `Wait ${timeLeft}s`;
+        }
+        return "Send Verification Email";
+    };
     return (
         <div className="w-full h-dvh flex flex-col text-center p-4 pt-6 gap-24">
+            <Alert
+                heading={alert.heading}
+                text={alert.text}
+                isVisible={alert.isVisible}
+                onClose={hideAlert}
+                type={alert.type}
+            />
             <div className="flex gap-3">
                 <ArrowLeft
                     strokeWidth={3}
@@ -60,11 +79,12 @@ function VerifyEmail({ user, role }) {
                     link to activate your account.
                 </p>
                 <Button
-                    title={"Send Verification Email"}
+                    title={getButtonTitle()}
                     classes={"bg-orange-500"}
                     loading={loading}
                     loadingMessage={"Sending Email..."}
                     fun={sendVerificationEmail}
+                    disabled={loading || isActive}
                 />
             </div>
         </div>

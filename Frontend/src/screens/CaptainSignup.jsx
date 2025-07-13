@@ -19,6 +19,7 @@ function CaptainSignup() {
 
   const navigation = useNavigate();
   const signupCaptain = async (data) => {
+
     const captainData = {
       fullname: {
         firstname: data.firstname,

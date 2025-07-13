@@ -16,25 +16,28 @@ function CaptainLogin() {
   } = useForm();
 
   const navigation = useNavigate();
+
   const loginCaptain = async (data) => {
-    try {
-      setLoading(true)
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/captain/login`,
-        data
-      );
-      Console.log(response);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userData", JSON.stringify({
-        type: "captain",
-        data: response.data.captain,
-      }));
-      navigation("/captain/home");
-    } catch (error) {
-      setResponseError(error.response.data.message);
-      Console.log(error);
-    } finally {
-      setLoading(false);
+    if (data.email.trim() !== "" && data.password.trim() !== "") {
+      try {
+        setLoading(true)
+        const response = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}/captain/login`,
+          data
+        );
+        Console.log(response);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userData", JSON.stringify({
+          type: "captain",
+          data: response.data.captain,
+        }));
+        navigation("/captain/home");
+      } catch (error) {
+        setResponseError(error.response.data.message);
+        Console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -53,7 +56,7 @@ function CaptainLogin() {
             type={"email"}
             name={"email"}
             register={register}
-            error={errors.password}
+            error={errors.email}
           />
           <Input
             label={"Password"}
@@ -67,10 +70,10 @@ function CaptainLogin() {
               {responseError}
             </p>
           )}
-          <Link to="/forgotPassword" className="text-sm mb-2 inline-block">
+          <Link to="/captain/forgot-password" className="text-sm mb-2 inline-block">
             Forgot Password?
           </Link>
-          <Button title={"Login"} loading={loading} type="submit"/>
+          <Button title={"Login"} loading={loading} type="submit" />
         </form>
         <p className="text-sm font-normal text-center mt-4">
           Don't have an account?{" "}
@@ -78,7 +81,7 @@ function CaptainLogin() {
             Sign up
           </Link>
         </p>
-        
+
       </div>
       <div>
         <Button

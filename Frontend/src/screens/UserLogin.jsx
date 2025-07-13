@@ -16,25 +16,28 @@ function UserLogin() {
   } = useForm();
 
   const navigation = useNavigate();
+  
   const loginUser = async (data) => {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/user/login`,
-        data
-      );
-      Console.log(response);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userData", JSON.stringify({
-        type: "user",
-        data: response.data.user,
-      }));
-      navigation("/home");
-    } catch (error) {
-      setResponseError(error.response.data.message);
-      Console.log(error);
-    } finally {
-      setLoading(false);
+    if (data.email.trim() !== "" && data.password.trim() !== "") {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}/user/login`,
+          data
+        );
+        Console.log(response);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userData", JSON.stringify({
+          type: "user",
+          data: response.data.user,
+        }));
+        navigation("/home");
+      } catch (error) {
+        setResponseError(error.response.data.message);
+        Console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -53,7 +56,7 @@ function UserLogin() {
             type={"email"}
             name={"email"}
             register={register}
-            error={errors.password}
+            error={errors.email}
           />
           <Input
             label={"Password"}
@@ -67,10 +70,10 @@ function UserLogin() {
               {responseError}
             </p>
           )}
-          <Link to="/forgotPassword" className="text-sm mb-2 inline-block">
+          <Link to="/user/forgot-password" className="text-sm mb-2 inline-block">
             Forgot Password?
           </Link>
-          <Button title={"Login"} loading={loading} type="submit"/>
+          <Button title={"Login"} loading={loading} type="submit" />
         </form>
         <p className="text-sm font-normal text-center mt-4">
           Don't have an account?{" "}

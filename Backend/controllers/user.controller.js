@@ -3,6 +3,7 @@ const userModel = require("../models/user.model");
 const userService = require("../services/user.service");
 const { validationResult } = require("express-validator");
 const blacklistTokenModel = require("../models/blacklistToken.model");
+const jwt = require("jsonwebtoken");
 
 module.exports.registerUser = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
@@ -77,10 +78,6 @@ module.exports.loginUser = asyncHandler(async (req, res) => {
 
   const token = user.generateAuthToken();
   res.cookie("token", token);
-  delete user.password;
-  delete user.__v;
-  delete user.createdAt;
-  delete user.updatedAt;
 
   res.json({
     message: "Logged in successfully",
@@ -95,7 +92,6 @@ module.exports.loginUser = asyncHandler(async (req, res) => {
       phone: user.phone,
       rides: user.rides,
       socketId: user.socketId,
-
       emailVerified: user.emailVerified,
     },
   });
@@ -126,4 +122,32 @@ module.exports.logoutUser = asyncHandler(async (req, res) => {
   await blacklistTokenModel.create({ token });
 
   res.status(200).json({ message: "Logged out successfully" });
+});
+
+module.exports.resetPassword = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors.array());
+  }
+
+  const { token, password } = req.body;
+  let payload;
+
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return res.status(400).json({ message: "This password reset link has expired or is no longer valid. Please request a new one to continue" });
+    } else {
+      return res.status(400).json({ message: "The password reset link is invalid or has already been used. Please request a new one to proceed", error: err });
+    }
+  }
+
+  const user = await userModel.findById(payload.id);
+  if (!user) return res.status(404).json({ message: "User not found. Please check your credentials and try again" });
+
+  user.password = await userModel.hashPassword(password);
+  await user.save();
+
+  res.status(200).json({ message: "Your password has been successfully reset. You can now log in with your new credentials" });
 });

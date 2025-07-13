@@ -17,11 +17,13 @@ import {
 import ChatScreen from "./screens/ChatScreen";
 import VerifyEmail from "./screens/VerifyEmail";
 import Error from "./screens/Error";
+import ForgotPassword from "./screens/ForgotPassword";
+import ResetPassword from "./screens/ResetPassword";
 
 function App() {
   return (
     <div className="w-full h-dvh flex items-center">
-      <div className="w-full sm:min-w-96 sm:w-96 h-full bg-white overflow-hidden">
+      <div className="relative w-full sm:min-w-96 sm:w-96 h-full bg-white overflow-hidden">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<GetStarted />} />
@@ -80,6 +82,9 @@ function App() {
             />
             <Route path="/:userType/chat/:rideId" element={<ChatScreen />} />
             <Route path="/:userType/verify-email/" element={<VerifyEmail />} />
+            <Route path="/:userType/forgot-password/" element={<ForgotPassword />} />
+            <Route path="/:userType/reset-password/" element={<ResetPassword />} />
+            
             <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>

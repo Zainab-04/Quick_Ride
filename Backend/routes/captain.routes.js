@@ -30,4 +30,11 @@ router.get("/profile", authCaptain, captainController.captainProfile);
 
 router.get("/logout", authCaptain, captainController.logoutCaptain);
 
+router.post(
+    "/reset-password",
+    body("token").notEmpty().withMessage("Token is required"),
+    body("password").isLength({ min: 8 }).withMessage("Password must be at least 8 characters long"),
+    captainController.resetPassword
+);
+
 module.exports = router;

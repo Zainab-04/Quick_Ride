@@ -34,6 +34,10 @@ app.get("/", (req, res) => {
   res.json("Hello, World!");
 });
 
+app.get("/reload", (req, res) => {
+  res.json("Server Reloaded");
+});
+
 app.use("/user", userRoutes);
 app.use("/captain", captainRoutes);
 app.use("/map", mapsRoutes);

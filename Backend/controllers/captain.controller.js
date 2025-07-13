@@ -3,6 +3,7 @@ const captainModel = require("../models/captain.model");
 const captainService = require("../services/captain.service");
 const { validationResult } = require("express-validator");
 const blacklistTokenModel = require("../models/blacklistToken.model");
+const jwt = require("jsonwebtoken");
 
 module.exports.registerCaptain = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
@@ -115,4 +116,32 @@ module.exports.logoutCaptain = asyncHandler(async (req, res) => {
   await blacklistTokenModel.create({ token });
 
   res.status(200).json({ message: "Logged out successfully" });
+});
+
+module.exports.resetPassword = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors.array());
+  }
+
+  const { token, password } = req.body;
+  let payload;
+
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return res.status(400).json({ message: "This password reset link has expired or is no longer valid. Please request a new one to continue" });
+    } else {
+      return res.status(400).json({ message: "The password reset link is invalid or has already been used. Please request a new one to proceed", error: err });
+    }
+  }
+
+  const captain = await captainModel.findById(payload.id);
+  if (!captain) return res.status(404).json({ message: "User not found. Please check your credentials and try again" });
+
+  captain.password = await captainModel.hashPassword(password);
+  await captain.save();
+
+  res.status(200).json({ message: "Your password has been successfully reset. You can now log in with your new credentials" });
 });
