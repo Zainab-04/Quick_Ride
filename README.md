@@ -1,3 +1,7 @@
+<div style="display: flex; margin-bottom:50px;">
+<img src="/Frontend//public/logo-quickride.png" height="100px" style="margin: 0 auto;">
+</div>
+
 # QuickRide - Full Stack Ride Booking Application
 
 ## 📋 <a name="table">Table of Contents</a>
@@ -131,18 +135,23 @@ Ensure to set up the required environment variables for both `Frontend` and `Bac
 
 ```plaintext
 VITE_SERVER_URL = http://localhost:3000
+VITE_ENVIRONMENT = development # Change to "production" for deployment
+VITE_RIDE_TIMEOUT = 90000 # ride will automatically cancel after 1.5 minutes if no-one accepts the ride
 ```
 
 #### Backend (`.env`)
 
 ```plaintext
 PORT = 3000
-SERVER_URL = http://localhost:3000
-ENVIRONMENT = development
+SERVER_URL = http://localhost:3000 
+CLIENT_URL = http://localhost:5173 # Change to deployed frontend url if in production
+ENVIRONMENT = development # Change to "production" for deployment
 MONGODB_PROD_URL = <your-mongodb-atlas-connection-string>
 MONGODB_DEV_URL = mongodb://127.0.0.1:27017/quickRide
 JWT_SECRET = <your-json-secret-string>
 GOOGLE_MAPS_API = <your-google-maps-api-key>
+MAIL_USER = <your-gmail-id>
+MAIL_PASS = <your-app-specific-gmail-password>
 ```
 
 ## <a name="scripts">📜Scripts</a>
