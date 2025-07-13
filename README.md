@@ -1,5 +1,5 @@
-<div style="display: flex; margin-bottom:50px;">
-<img src="/Frontend//public/logo-quickride.png" height="100px" style="margin: 0 auto;">
+<div align="center">
+    <img src="/Frontend//public/logo-quickride.png" height="100px" >
 </div>
 
 # QuickRide - Full Stack Ride Booking Application
