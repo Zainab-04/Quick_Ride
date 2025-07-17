@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const SERVER_URL = process.env.SERVER_URL;
-const interval = 1000;
+const interval = process.env.RELOAD_INTERVAL;
 
 function reloadWebsite() {
   axios
@@ -13,7 +13,7 @@ function reloadWebsite() {
 }
 
 function keepServerRunning() {
-  setInterval(reloadWebsite, interval);
+  setInterval(reloadWebsite, 60000 * interval);
 }
 
 module.exports = keepServerRunning;
