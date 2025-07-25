@@ -1,4 +1,4 @@
-const moment = require("moment");
+const moment = require("moment-timezone");
 const BackendLog = require("../models/backend-log.model");
 
 const dbStream = {
@@ -20,7 +20,7 @@ const dbStream = {
         status: parseInt(status),
         responseTime: parseFloat(responseTime),
         contentLength,
-        formattedTimestamp: moment().format("MMM DD hh:mm:ss A"),
+        formattedTimestamp: moment().tz("Asia/Kolkata").format("MMM DD hh:mm:ss A"),
       };
       try {
         await BackendLog.create(log);

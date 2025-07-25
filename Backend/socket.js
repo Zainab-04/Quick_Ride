@@ -1,4 +1,4 @@
-const moment = require("moment");
+const moment = require("moment-timezone");
 const { Server } = require("socket.io");
 const userModel = require("./models/user.model");
 const captainModel = require("./models/captain.model");
@@ -19,7 +19,7 @@ function initializeSocket(server) {
 
     if (process.env.ENVIRONMENT == "production") {
       socket.on("log", async (log) => {
-        log.formattedTimestamp = moment().format("MMM DD hh:mm:ss A");
+        log.formattedTimestamp = moment().tz("Asia/Kolkata").format("MMM DD hh:mm:ss A");
         try {
           await frontendLogModel.create(log);
         } catch (error) {
