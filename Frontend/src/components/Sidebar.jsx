@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ChevronRight, CircleUserRound, History, KeyRound, Menu, X } from "lucide-react";
 import Button from "./Button";
@@ -22,7 +22,7 @@ function Sidebar() {
   const logout = async () => {
     try {
       await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/${newUser.type}/profile`,
+        `${import.meta.env.VITE_SERVER_URL}/${newUser.type}/logout`,
         {
           headers: {
             token: token,

@@ -1,6 +1,8 @@
+const moment = require("moment");
 const { Server } = require("socket.io");
 const userModel = require("./models/user.model");
 const captainModel = require("./models/captain.model");
+const frontendLogModel = require("./models/frontend-log.model");
 
 let io;
 
@@ -14,6 +16,17 @@ function initializeSocket(server) {
 
   io.on("connection", (socket) => {
     console.log(`Client connected: ${socket.id}`);
+
+    if (process.env.ENVIRONMENT == "production") {
+      socket.on("log", async (log) => {
+        log.formattedTimestamp = moment().format("MMM DD hh:mm:ss A");
+        try {
+          await frontendLogModel.create(log);
+        } catch (error) {
+          console.log("Error sending logs...");
+        }
+      });
+    }
 
     socket.on("join", async (data) => {
       const { userId, userType } = data;
@@ -40,11 +53,11 @@ function initializeSocket(server) {
       });
     });
 
-    socket.on("join-room", (roomId)=>{
+    socket.on("join-room", (roomId) => {
       socket.join(roomId);
       console.log(`${socket.id} joined room: ${roomId}`);
-    })
-    socket.on("message", ({rideId,msg}) => {
+    });
+    socket.on("message", ({ rideId, msg }) => {
       socket.to(rideId).emit("receiveMessage", msg);
     });
 

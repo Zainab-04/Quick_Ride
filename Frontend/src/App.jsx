@@ -1,5 +1,4 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import {
   GetStarted,
   UserLogin,
@@ -19,12 +18,17 @@ import VerifyEmail from "./screens/VerifyEmail";
 import Error from "./screens/Error";
 import ForgotPassword from "./screens/ForgotPassword";
 import ResetPassword from "./screens/ResetPassword";
+import { logger } from "./utils/logger";
+import { SocketDataContext } from "./contexts/SocketContext";
+import { useContext } from "react";
+import { useEffect } from "react";
 
 function App() {
   return (
     <div className="w-full h-dvh flex items-center">
       <div className="relative w-full sm:min-w-96 sm:w-96 h-full bg-white overflow-hidden">
         <BrowserRouter>
+          <LoggingWrapper />
           <Routes>
             <Route path="/" element={<GetStarted />} />
             <Route
@@ -84,7 +88,7 @@ function App() {
             <Route path="/:userType/verify-email/" element={<VerifyEmail />} />
             <Route path="/:userType/forgot-password/" element={<ForgotPassword />} />
             <Route path="/:userType/reset-password/" element={<ResetPassword />} />
-            
+
             <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>
@@ -101,3 +105,15 @@ function App() {
 }
 
 export default App;
+
+function LoggingWrapper() {
+  const location = useLocation();
+  const { socket } = useContext(SocketDataContext);
+
+  useEffect(() => {
+    if (socket) {
+      logger(socket);
+    }
+  }, [location.pathname, location.search]);
+  return null;
+}

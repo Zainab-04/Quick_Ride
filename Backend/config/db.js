@@ -7,7 +7,6 @@ let MONGO_DB = {
 
 let environment = process.env.ENVIRONMENT;
 
-console.log(MONGO_DB[environment].url);
 mongoose
   .connect(MONGO_DB[environment].url)
   .then(() => {

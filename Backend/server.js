@@ -17,10 +17,19 @@ const mapsRoutes = require("./routes/maps.routes");
 const rideRoutes = require("./routes/ride.routes");
 const mailRoutes = require("./routes/mail.routes");
 const keepServerRunning = require("./services/active.service");
+const dbStream = require("./services/logging.service");
 require("./config/db");
 const PORT = process.env.PORT || 4000;
 
-app.use(morgan("dev"));
+if (process.env.ENVIRONMENT == "production") {
+  app.use(
+    morgan(":method :url :status :response-time ms - :res[content-length]", {
+      stream: dbStream,
+    })
+  );
+} else {
+  app.use(morgan("dev"));
+}
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
