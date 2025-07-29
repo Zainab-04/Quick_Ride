@@ -6,11 +6,14 @@ import axios from "axios";
 import { useUser } from "../contexts/UserContext";
 import { ArrowLeft } from "lucide-react";
 import Console from "../utils/console";
+import { useAlert } from "../hooks/useAlert";
+import { Alert } from "../components/Alert";
 
 function UserEditProfile() {
   const token = localStorage.getItem("token");
   const [responseError, setResponseError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { alert, showAlert, hideAlert } = useAlert();
 
   const {
     handleSubmit,
@@ -35,7 +38,7 @@ function UserEditProfile() {
       setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/user/update`,
-        { userData },
+        userData,
         {
           headers: {
             token: token,
@@ -43,11 +46,15 @@ function UserEditProfile() {
         }
       );
       Console.log(response);
-      navigation("/home");
+      showAlert('Edit Successful', 'Your profile details has been successfully updated', 'success');
+
+      setTimeout(() => {
+        navigation("/home");
+      }, 5000)
     } catch (error) {
-      setResponseError(error.response.data[0].msg);
+      showAlert('Some Error occured', error.response.data[0].msg, 'failure');
+
       Console.log(error.response);
-      Console.log(error);
     } finally {
       setLoading(false);
     }
@@ -60,6 +67,13 @@ function UserEditProfile() {
   }, [responseError]);
   return (
     <div className="w-full h-dvh flex flex-col justify-between p-4 pt-6">
+      <Alert
+        heading={alert.heading}
+        text={alert.text}
+        isVisible={alert.isVisible}
+        onClose={hideAlert}
+        type={alert.type}
+      />
       <div>
         <div className="flex gap-3">
           <ArrowLeft
@@ -69,15 +83,15 @@ function UserEditProfile() {
           />
           <Heading title={"Edit Profile"} />
         </div>
-          <Input
-            label={"Email"}
-            type={"email"}
-            name={"email"}
-            register={register}
-            error={errors.email}
-            defaultValue={user.email}
-            disabled={true}
-          />
+        <Input
+          label={"Email"}
+          type={"email"}
+          name={"email"}
+          register={register}
+          error={errors.email}
+          defaultValue={user.email}
+          disabled={true}
+        />
         <form onSubmit={handleSubmit(updateUserProfile)}>
           <Input
             label={"First name"}

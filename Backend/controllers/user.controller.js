@@ -102,11 +102,19 @@ module.exports.userProfile = asyncHandler(async (req, res) => {
 });
 
 module.exports.updateUserProfile = asyncHandler(async (req, res) => {
-  const { userData } = req.body;
-  console.log(req.body);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors.array());
+  }
+
+  const { fullname,  phone } = req.body;
+
   const updatedUserData = await userModel.findOneAndUpdate(
     { _id: req.user._id },
-    userData,
+    {
+      fullname: fullname,
+      phone,
+    },
     { new: true }
   );
 
@@ -137,17 +145,30 @@ module.exports.resetPassword = asyncHandler(async (req, res) => {
     payload = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
     if (err.name === "TokenExpiredError") {
-      return res.status(400).json({ message: "This password reset link has expired or is no longer valid. Please request a new one to continue" });
+      return res.status(400).json({
+        message:
+          "This password reset link has expired or is no longer valid. Please request a new one to continue",
+      });
     } else {
-      return res.status(400).json({ message: "The password reset link is invalid or has already been used. Please request a new one to proceed", error: err });
+      return res.status(400).json({
+        message:
+          "The password reset link is invalid or has already been used. Please request a new one to proceed",
+        error: err,
+      });
     }
   }
 
   const user = await userModel.findById(payload.id);
-  if (!user) return res.status(404).json({ message: "User not found. Please check your credentials and try again" });
+  if (!user)
+    return res.status(404).json({
+      message: "User not found. Please check your credentials and try again",
+    });
 
   user.password = await userModel.hashPassword(password);
   await user.save();
 
-  res.status(200).json({ message: "Your password has been successfully reset. You can now log in with your new credentials" });
+  res.status(200).json({
+    message:
+      "Your password has been successfully reset. You can now log in with your new credentials",
+  });
 });

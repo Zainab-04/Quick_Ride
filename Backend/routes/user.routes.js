@@ -8,6 +8,7 @@ router.post("/register",
     body("email").isEmail().withMessage("Invalid Email"),
     body("password").isLength({ min: 8 }).withMessage("Password must be at least 8 characters long"),
     body("fullname.firstname").isLength({min:2}).withMessage("First name must be at least 2 characters long"),
+    body("phone").isLength({min:10, max:10}).withMessage("Phone number should be of 10 digits only"),
     userController.registerUser
 );
 
@@ -21,7 +22,7 @@ router.post("/login",
 router.post("/update", authUser,
     body("fullname.firstname").isLength({min:2}).withMessage("First name must be at least 2 characters long"),
     body("fullname.lastname").isLength({min:2}).withMessage("Last name must be at least 2 characters long"),
-    body("phone").isMobilePhone().withMessage("Invalid phone number"),
+    body("phone").isLength({min:10, max:10}).withMessage("Phone number should be of 10 digits only"),
     userController.updateUserProfile
 );
 
