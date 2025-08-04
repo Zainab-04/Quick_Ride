@@ -4,6 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SocketDataContext } from "../contexts/SocketContext";
 import Console from "../utils/console";
+import Loading from "./Loading";
 
 function ChatScreen() {
   const { rideId, userType } = useParams();
@@ -80,7 +81,10 @@ function ChatScreen() {
   }, [userData]);
 
   useEffect(() => {
-    getUserDetails();
+    setTimeout(() => {
+
+      getUserDetails();
+    }, 3000);
 
     socket.on("receiveMessage", ({ msg, by, time }) => {
       setMessages((prev) => [...prev, { msg, by, time }]);
@@ -137,7 +141,7 @@ function ChatScreen() {
 
         {/* Message */}
         <form
-          className="flex items-center p-3 h-fit gap-2 border-t-2 border-t-blue-600"
+          className="flex items-center p-3 h-fit gap-2"
           onSubmit={sendMessage}
         >
           <input
@@ -155,13 +159,7 @@ function ChatScreen() {
       </div>
     )
   } else {
-    return (
-      <div className="flex items-center justify-center h-dvh p-4">
-        <h1 className="text-xl text-center text-pretty font-medium text-gray-500">
-          You are not authorized to view this chat
-        </h1>
-      </div>
-    );
+    return <Loading />;
   }
 
 
