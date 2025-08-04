@@ -251,7 +251,7 @@ function UserHomeScreen() {
       Console.log("Ride Confirmed");
       Console.log(data.captain.location);
       setMapLocation(
-        `https://www.google.com/maps?q=${data.captain.location.ltd},${data.captain.location.lng} to ${pickupLocation}&output=embed`
+        `https://www.google.com/maps?q=${data.captain.location.coordinates[1]},${data.captain.location.coordinates[0]} to ${pickupLocation}&output=embed`
       );
       setConfirmedRideData(data);
     });

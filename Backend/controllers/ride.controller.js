@@ -22,12 +22,15 @@ module.exports.chatDetails = async (req, res) => {
         socketId: ride.user?.socketId,
         fullname: ride.user?.fullname,
         phone: ride.user?.phone,
+        _id: ride.user?._id,
       },
       captain: {
         socketId: ride.captain?.socketId,
         fullname: ride.captain?.fullname,
         phone: ride.captain?.phone,
+        _id: ride.captain?._id,
       },
+      messages: ride.messages,
     };
 
     res.status(200).json(response);
@@ -72,15 +75,19 @@ module.exports.createRide = async (req, res) => {
           4,
           vehicleType
         );
-        
+
         ride.otp = "";
 
         const rideWithUser = await rideModel
           .findOne({ _id: ride._id })
           .populate("user");
 
+        console.log(
+          captainsInRadius.map(
+            (ride) => `${ride.fullname.firstname} ${ride.fullname.lastname} `
+          )
+        );
         captainsInRadius.map((captain) => {
-          console.log(captain._id);
           sendMessageToSocketId(captain.socketId, {
             event: "new-ride",
             data: rideWithUser,
@@ -90,7 +97,6 @@ module.exports.createRide = async (req, res) => {
         console.error("Background task failed:", e.message);
       }
     });
-
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -124,6 +130,42 @@ module.exports.confirmRide = async (req, res) => {
   const { rideId } = req.body;
 
   try {
+    const rideDetails = await rideModel.findOne({ _id: rideId });
+
+    if (!rideDetails) {
+      return res.status(404).json({ message: "Ride not found." });
+    }
+
+    switch (rideDetails.status) {
+      case "accepted":
+        return res
+          .status(400)
+          .json({
+            message:
+              "The ride is accepted by another captain before you. Better luck next time.",
+          });
+
+      case "ongoing":
+        return res
+          .status(400)
+          .json({
+            message: "The ride is currently ongoing with another captain.",
+          });
+
+      case "completed":
+        return res
+          .status(400)
+          .json({ message: "The ride has already been completed." });
+
+      case "cancelled":
+        return res
+          .status(400)
+          .json({ message: "The ride has been cancelled." });
+
+      default:
+        break;
+    }
+
     const ride = await rideService.confirmRide({
       rideId,
       captain: req.captain,
@@ -133,6 +175,9 @@ module.exports.confirmRide = async (req, res) => {
       event: "ride-confirmed",
       data: ride,
     });
+
+    // TODO: Remove ride from other captains
+    // Implement logic here, maybe emit an event or update captain listings
 
     return res.status(200).json(ride);
   } catch (err) {
@@ -204,7 +249,7 @@ module.exports.cancelRide = async (req, res) => {
       },
       { new: true }
     );
-    
+
     const pickupCoordinates = await mapService.getAddressCoordinate(ride.pickup);
     const captainsInRadius = await mapService.getCaptainsInTheRadius(
       pickupCoordinates.ltd,

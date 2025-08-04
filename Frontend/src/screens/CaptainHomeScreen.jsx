@@ -6,6 +6,8 @@ import { Phone, User } from "lucide-react";
 import { SocketDataContext } from "../contexts/SocketContext";
 import { NewRide, Sidebar } from "../components";
 import Console from "../utils/console";
+import { useAlert } from "../hooks/useAlert";
+import { Alert } from "../components/Alert";
 
 const defaultRideData = {
   user: {
@@ -33,6 +35,7 @@ function CaptainHomeScreen() {
   const { captain } = useCaptain();
   const { socket } = useContext(SocketDataContext);
   const [loading, setLoading] = useState(false);
+  const { alert, showAlert, hideAlert } = useAlert();
 
   const [riderLocation, setRiderLocation] = useState({
     ltd: null,
@@ -90,9 +93,13 @@ function CaptainHomeScreen() {
         );
         Console.log(response);
       }
-    } catch (err) {
+    } catch (error) {
       setLoading(false);
-      Console.log(err);
+      showAlert('Some error occured', error.response.data.message, 'failure');
+      Console.log(err.response);
+      setTimeout(() => {
+        clearRideData();
+      }, 1000);
     }
   };
 
@@ -101,9 +108,7 @@ function CaptainHomeScreen() {
       if (newRide._id != "" && otp.length == 6) {
         setLoading(true);
         const response = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/ride/start-ride?rideId=${
-            newRide._id
-          }&otp=${otp}`,
+          `${import.meta.env.VITE_SERVER_URL}/ride/start-ride?rideId=${newRide._id}&otp=${otp}`,
           {
             headers: {
               token: token,
@@ -196,6 +201,17 @@ function CaptainHomeScreen() {
       );
     }
   };
+
+  const clearRideData = () => {
+    setShowBtn("accept");
+    setLoading(false);
+    setShowCaptainDetailsPanel(true);
+    setShowNewRidePanel(false);
+    setNewRide(defaultRideData);
+    localStorage.removeItem("rideDetails");
+    localStorage.removeItem("showPanel");
+  }
+
   useEffect(() => {
     if (captain._id) {
       socket.emit("join", {
@@ -217,13 +233,7 @@ function CaptainHomeScreen() {
     socket.on("ride-cancelled", (data) => {
       Console.log("Ride cancelled", data);
       updateLocation();
-      setShowBtn("accept");
-      setLoading(false);
-      setShowCaptainDetailsPanel(true);
-      setShowNewRidePanel(false);
-      setNewRide(defaultRideData);
-      localStorage.removeItem("rideDetails");
-      localStorage.removeItem("showPanel");
+      clearRideData();
     });
   }, [captain]);
 
@@ -320,6 +330,13 @@ function CaptainHomeScreen() {
       className="relative w-full h-dvh bg-contain"
       style={{ backgroundImage: `url(${map})` }}
     >
+      <Alert
+        heading={alert.heading}
+        text={alert.text}
+        isVisible={alert.isVisible}
+        onClose={hideAlert}
+        type={alert.type}
+      />
       <Sidebar />
       <iframe
         src={mapLocation}

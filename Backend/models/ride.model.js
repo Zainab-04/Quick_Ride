@@ -26,7 +26,7 @@ const rideSchema = new mongoose.Schema(
     vehicle: {
       type: String,
       required: true,
-    }, 
+    },
     status: {
       type: String,
       enum: ["pending", "accepted", "ongoing", "completed", "cancelled"],
@@ -54,6 +54,19 @@ const rideSchema = new mongoose.Schema(
       select: false,
       required: true,
     },
+    messages: [
+      {
+        msg: String,
+        by: {
+          type: String,
+          enum: ["user", "captain"],
+        },
+        time: String,
+        date: String,
+        timestamp: Date,
+        _id: false
+      },
+    ],
   },
   { timestamps: true }
 );

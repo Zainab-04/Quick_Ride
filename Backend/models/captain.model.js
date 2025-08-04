@@ -68,11 +68,15 @@ const captainSchema = new mongoose.Schema(
     },
 
     location: {
-      ltd: {
-        type: Number,
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+        default: "Point",
       },
-      lng: {
-        type: Number,
+      coordinates: {
+        type: [Number],
+        required: true,
       },
     },
     emailVerified: {
