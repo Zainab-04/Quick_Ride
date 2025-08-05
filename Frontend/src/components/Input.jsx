@@ -1,5 +1,3 @@
-import React from "react";
-
 function Input({ label, type, name, placeholder, defaultValue, register, error, options, disabled }) {
   return (
     <div className="my-2">

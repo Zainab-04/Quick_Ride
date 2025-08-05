@@ -157,7 +157,7 @@ function UserHomeScreen() {
     const rideDetails = JSON.parse(localStorage.getItem("rideDetails"));
     try {
       setLoading(true);
-      const response = await axios.get(
+      await axios.get(
         `${import.meta.env.VITE_SERVER_URL}/ride/cancel?rideId=${rideDetails._id || rideDetails.confirmedRideData._id
         }`,
         {

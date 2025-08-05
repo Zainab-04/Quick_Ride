@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import Console from '../utils/console';
 import axios from 'axios';
-import { useEffect } from 'react';
 import { useAlert } from '../hooks/useAlert';
-import { Alert } from '../components/Alert';
+import { Alert } from '../components';
 import password_image from '/password.svg'
 
 const allowedParams = ["user", "captain"];

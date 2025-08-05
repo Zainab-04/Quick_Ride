@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import map from "/map.png";
 import axios from "axios";
 import { useCaptain } from "../contexts/CaptainContext";
@@ -7,7 +7,7 @@ import { SocketDataContext } from "../contexts/SocketContext";
 import { NewRide, Sidebar } from "../components";
 import Console from "../utils/console";
 import { useAlert } from "../hooks/useAlert";
-import { Alert } from "../components/Alert";
+import { Alert } from "../components";
 
 const defaultRideData = {
   user: {
@@ -96,7 +96,7 @@ function CaptainHomeScreen() {
     } catch (error) {
       setLoading(false);
       showAlert('Some error occured', error.response.data.message, 'failure');
-      Console.log(err.response);
+      Console.log(error.response);
       setTimeout(() => {
         clearRideData();
       }, 1000);
@@ -133,7 +133,7 @@ function CaptainHomeScreen() {
     try {
       if (newRide._id != "") {
         setLoading(true);
-        const response = await axios.post(
+        await axios.post(
           `${import.meta.env.VITE_SERVER_URL}/ride/end-ride`,
           {
             rideId: newRide._id,

@@ -1,6 +1,7 @@
-import Button from "../components/Button";
-import Heading from "../components/Heading";
-import Input from "../components/Input";
+import { Alert } from "./Alert";
+import Button from "./Button";
+import Heading from "./Heading";
+import Input from "./Input";
 import LocationSuggestions from "./LocationSuggestions";
 import NewRide from "./NewRide";
 import RideDetails from "./RideDetails";
@@ -10,6 +11,7 @@ import Sidebar from "./Sidebar";
 import VerifyEmail from "./VerifyEmail";
 
 export {
+  Alert,
   Button,
   Heading,
   Input,
@@ -19,5 +21,5 @@ export {
   SelectVehicle,
   Sidebar,
   Spinner,
-  VerifyEmail
+  VerifyEmail,
 };

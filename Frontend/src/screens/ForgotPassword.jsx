@@ -8,7 +8,7 @@ import useCooldownTimer from '../hooks/useCooldownTimer';
 import mailImg from "/mail.png";
 import { ArrowLeft } from 'lucide-react';
 import { useAlert } from '../hooks/useAlert';
-import { Alert } from '../components/Alert';
+import { Alert } from '../components';
 
 const allowedParams = ["user", "captain"];
 

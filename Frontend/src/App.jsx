@@ -12,16 +12,15 @@ import {
   RideHistory,
   UserEditProfile,
   CaptainEditProfile,
+  Error,
+  ChatScreen,
+  VerifyEmail,
+  ResetPassword,
+  ForgotPassword
 } from "./screens/";
-import ChatScreen from "./screens/ChatScreen";
-import VerifyEmail from "./screens/VerifyEmail";
-import Error from "./screens/Error";
-import ForgotPassword from "./screens/ForgotPassword";
-import ResetPassword from "./screens/ResetPassword";
 import { logger } from "./utils/logger";
 import { SocketDataContext } from "./contexts/SocketContext";
-import { useContext } from "react";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { ChevronLeft, Trash2 } from "lucide-react";
 
 function App() {

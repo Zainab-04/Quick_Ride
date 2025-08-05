@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import React from "react";
 
 const vehicles = [
   {
@@ -27,6 +26,7 @@ const vehicles = [
     price: 200.0,
   },
 ];
+
 function SelectVehicle({
   selectedVehicle,
   showPanel,
@@ -37,7 +37,6 @@ function SelectVehicle({
 }) {
   return (
     <>
-      {/* {showPanel && ( */}
       <div
         className={`${showPanel ? "bottom-0" : "-bottom-[60%]"} transition-all duration-500 absolute  bg-white w-full rounded-t-xl p-4 pt-0`}
       >
@@ -61,7 +60,6 @@ function SelectVehicle({
           />
         ))}
       </div>
-      {/* )} */}
     </>
   );
 }

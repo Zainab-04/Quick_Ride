@@ -1,13 +1,10 @@
 import {
-  ChevronDown,
   CreditCard,
   MapPinMinus,
   MapPinPlus,
-  Phone,
   PhoneCall,
   SendHorizontal,
 } from "lucide-react";
-import React from "react";
 import Button from "./Button";
 
 function RideDetails({

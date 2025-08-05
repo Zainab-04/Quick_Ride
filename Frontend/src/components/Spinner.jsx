@@ -1,5 +1,3 @@
-import React from "react";
-
 function Spinner({scale}) {
   return (
     <div>

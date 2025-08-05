@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 export const captainDataContext = createContext();
 
@@ -20,7 +20,6 @@ function CaptainContext({ children }) {
           capacity: 0,
           type: "",
         },
-        // _id: "",
         rides: [],
         status: "inactive",
       }

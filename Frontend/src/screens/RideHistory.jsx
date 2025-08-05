@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   ArrowLeft,
   Calendar,
   ChevronUp,
   Clock,
-  CreditCard,
-  Route,
-  Timer,
+  CreditCard
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 

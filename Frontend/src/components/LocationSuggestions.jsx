@@ -1,5 +1,4 @@
 import { MapPin } from "lucide-react";
-import React, { useEffect } from "react";
 import Console from "../utils/console";
 
 const locationSuggestions = [

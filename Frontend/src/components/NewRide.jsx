@@ -1,12 +1,10 @@
 import {
-  ChevronDown,
   CreditCard,
   MapPinMinus,
   MapPinPlus,
   PhoneCall,
   SendHorizontal,
 } from "lucide-react";
-import React, { useState } from "react";
 import Button from "./Button";
 
 function NewRide({

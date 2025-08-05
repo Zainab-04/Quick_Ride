@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "../components/index";
 import background from "/get_started_illustration.jpg";
@@ -27,7 +27,7 @@ function GetStarted() {
         src={logo}
         alt="Logo"
       />
-      {/* <h1 className="m-6 font-semibold text-2xl">QuickRide</h1> */}
+      
       <div
         className="flex flex-col bg-white p-4 pb-8 gap-8 rounded-t-lg
       "

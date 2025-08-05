@@ -17,6 +17,12 @@ import RideHistory from "./RideHistory";
 import UserEditProfile from "./UserEditProfile";
 import CaptainEditProfile from "./CaptainEditProfile";
 
+import Error from "./Error";
+import ChatScreen from "./ChatScreen";
+import VerifyEmail from "./VerifyEmail";
+import ResetPassword from "./ResetPassword";
+import ForgotPassword from "./ForgotPassword";
+
 export {
   GetStarted,
   UserSignup,
@@ -30,4 +36,9 @@ export {
   RideHistory,
   UserEditProfile,
   CaptainEditProfile,
+  Error,
+  ChatScreen,
+  VerifyEmail,
+  ResetPassword,
+  ForgotPassword
 };

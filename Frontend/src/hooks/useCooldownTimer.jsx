@@ -1,4 +1,3 @@
-// hooks/useCooldownTimer.js
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 const useCooldownTimer = (cooldownDuration = 60000, storageKey = 'cooldown-timer') => { // 60 seconds default

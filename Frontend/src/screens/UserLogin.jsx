@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Heading, Input } from "../components";
@@ -16,7 +16,7 @@ function UserLogin() {
   } = useForm();
 
   const navigation = useNavigate();
-  
+
   const loginUser = async (data) => {
     if (data.email.trim() !== "" && data.password.trim() !== "") {
       try {

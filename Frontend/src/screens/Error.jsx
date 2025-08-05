@@ -1,6 +1,4 @@
-import React from "react";
 import { Button } from "../components";
-import { Heading } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Error = () => {
