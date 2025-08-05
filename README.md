@@ -1,160 +1,233 @@
 <div align="center">
-    <img src="/Frontend//public/logo-quickride.png" height="100px" >
+    <img src="/Frontend//public/logo-quickride-green.png" height="100px" >
 </div>
 
 # QuickRide - Full Stack Ride Booking Application
 
-## 📋 <a name="table">Table of Contents</a>
+QuickRide is a feature-rich project built using modern web technologies. It replicates the core features and functionalities of the existing ride booking platforms, including **user authentication**, **ride booking**, **real-time location tracking**, **fare calculation** and **real-time communication**. The application features a clean and responsive user interface, ensuring an intuitive user experience. Designed as a learning and portfolio project, it showcases skills in **frontend and backend development, API integration, and real-time features**.
 
-1. 📃 [Introduction](#introduction)
-2. ⚙️ [Tech Stack](#tech-stack)
-3. 🔖 [Features](#features)
-4. 🖼️ [Screenshots](#screenshots)
-5. ⚡ [Quick Start](#quick-start)
-6. 🌏 [Environment Variables](#environment-variables)
-7. 📜 [Scripts](#scripts)
 
-## <a name="introduction">📃Introduction</a>
+---
 
-QuickRide is a feature-rich project built using modern web and mobile technologies. It replicates the core functionalities of the existing ride booking platforms, including **user authentication**, **ride booking**, **real-time location tracking**, **fare calculation** and **real-time communication**. The application features a clean and responsive user interface, ensuring an intuitive user experience. Designed as a learning and portfolio project, it showcases skills in **frontend and backend development, API integration, and real-time features**.
+⭐ **If you found this project helpful or interesting, please consider giving it a star on [GitHub](https://github.com/asif-khan-2k19/QuickRide)! It helps others discover the project and keeps me motivated to improve it.** ⭐
 
-## <a name="tech-stack">⚙️Tech Stack</a>
+---
+
+## 📚 Table of Contents
+
+1. [Tech Stack](#tech-stack)
+2. [Features](#features)
+3. [Screenshots](#screenshots)
+4. [Quick Start](#quick-start)
+5. [Environment Variables](#environment-variables)
+6. [Contributing](#contributing)
+7. [License](#license)
+
+---
+
+## ⚙️ Tech Stack
 
 <p align="center">
-    <img src="https://skillicons.dev/icons?i=html,css,js,react,nodejs,express,mongo,tailwind,gcp,npm" />
+  <img src="https://skillicons.dev/icons?i=html,css,js,react,nodejs,express,mongo,tailwind,gcp,npm,vercel,git,gmail,postman&perline=7" />
 </p>
 
-- HTML
-- CSS
-- JavaScript
-- React JS
-- Node JS
-- Express JS
-- Socket IO
-- Json Web Token
-- Mongo DB
-- Tailwind CSS
-- Google Cloud Platform
-- Node Package Manager
+| **Category**       | **Technologies / Tools**                                              |
+| ------------------ | --------------------------------------------------------------------- |
+| **Frontend**       | HTML, CSS, React.js, Tailwind CSS, Google Maps                        |
+| **Backend**        | Node.js, Express.js, MongoDB, Socket IO, NodeMailer, Google Maps APIs |
+| **Authentication** | JWT (JSON Web Token), bcrypt                                          |
+| **Deployment**     | Vercel, Render                                                        |
+| **Dev Tools**      | Postman, npm, Nodemon, ESLint, Custom Logger                          |
 
-## <a name="features">🔖Features</a>
 
-🔖 **Onboarding Flow:** _Seamless user registration and setup process for easy account creation._
+---
 
-🔖 **Authentication & Authorization:** _Secure login, registration, and logout functionality, ensuring access control for different user roles using `jsonwebtoken`._
+## ✨ Features
 
-🔖 **Profile Management:** _Manage and update user account details directly from the profile screen._
+### 🔐 Authentication & Authorization
 
-🔖 **Home Screen with Live Location & Google Map Integration:** _Real-time location tracking using `Geo-Location APIs`, with an `interactive map interface`._
+- Secure email/password login with full form validation
+- Email verification and logout functionality
+- Forgot and change password support
+- Role-based access control (User and Captain)
+- Session handling and route protection (unauthorized access is blocked)
 
-🔖 **Google Places Autocomplete:** _Effortless searching for pickup and destination locations with `autocomplete suggestions for any place worldwide`._
+### 🧑🏻 User Management
 
-🔖 **Find Rides:** _Input pickup and destination locations to search for available rides instantly._
+- Edit personal profile details (name, email, phone)
+- Ride history tracking
+- Form validation for all user inputs
 
-🔖 **Select Rides:** _Choose any nearby vehicle like Car, Bike or Auto._
+### 📍 Location & Mapping
 
-🔖 **Confirm Ride with Detailed Information:** _View comprehensive ride details, including `estimated time and distance`, `fare price`, and `vehicle information`._
+- Pickup and destination selection with address auto-complete
+- Real-time location tracking on interactive maps
+- Route visualization with distance and estimated time calculation
 
-🔖 **Ride Start with OTP Verification:** _Ensure a secure ride experience with `OTP-based verification` at the start of the trip._
+### 🚖 Ride Booking System
 
-🔖 **Real-Time Communication:** _User and Captain can communicate with each other using in app `messaging and calling features implemented using Socket IO`._
+- Supports multiple ride types: Car, Bike, and Auto
+- Live ride status updates: Pending, Accepted, Ongoing, Completed, Cancelled
+- Concurrency control: A ride request can only be accepted by one captain
+- Automatic ride cancellation after timeout
+- Accurate fare estimation based on distance and time
 
-🔖 **Pickup and Destination Updates on Map:** _Get `real-time updates of the pickup and destination locations` on the map during the trip through `Google Maps APIs`._
+### 🔄 Real-Time Updates
 
-🔖 **Cancel Ride Option:** _Flexibility to cancel rides anytime._
+- Socket-based updates for ride status and live locations
+- Real-time in-app chat between rider and captain
+- Chat messages are stored in the database with timestamps
+- Access control ensures only assigned rider and captain can view the conversation
 
-🔖 **Ride History:** _Review and track all previously booked rides in the history section._
+### 👨‍✈️ Captain (Driver) Interface
 
-## <a name="screenshots">🖼️Screenshots</a>
-<img width="70%" style="border-radius:10px;" src="./Frontend/public/user-auth.png">
-<img width="70%" style="border-radius:10px;" src="./Frontend/public/captain-auth.png">
-<img width="70%" style="border-radius:10px;" src="./Frontend/public/sidebar.png">
-<img width="70%" style="border-radius:10px;" src="./Frontend/public/user-module.png">
-<img width="70%" style="border-radius:10px;" src="./Frontend/public/captain-module.png">
+- Accept or reject incoming ride requests
+- Real-time updates for trip progress
+- Role-specific access to ride-related actions
 
-## <a name="quick-start">⚡Quick Start</a>
+### 🧰 System Utilities
 
-### 🪟 Project Structure
+- Custom logger to persist frontend and backend logs in the database
+- Force reset feature to clear all local app data and recover from unstable states
+- Popup alert system for immediate feedback (success, error, warning)
+
+---
+
+## 🖼️ Screenshots
+
+<details>
+<summary>Authentication</summary>
+
+![User Auth](./Frontend/public/screens/user-auth.png)
+
+</details>
+
+<details>
+<summary>Sidebar Navigation</summary>
+
+![Sidebar](./Frontend/public/screens/sidebar.png)
+
+</details>
+
+<details>
+<summary>User Module</summary>
+
+![User Module](./Frontend/public/screens/user-module.png)
+
+</details>
+
+<details>
+<summary>Captain Module</summary>
+
+![Captain Module](./Frontend/public/screens/captain-module.png)
+
+</details>
+
+---
+
+## ⚡ Quick Start
+
+### 📁 Project Structure
 
 ```
-📂 Backend
-📂 Frontend
+
+📂 Backend      // Node.js + Express server
+📂 Frontend     // React.js application
+
 ```
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/asif-khan-2k19/QuickRide.git
-cd quickride
+cd QuickRide
 ```
 
 ### 2. Install Dependencies
 
-#### For Frontend
+#### Frontend
 
 ```bash
 cd Frontend
 npm install
 ```
 
-#### For Backend
+#### Backend
 
 ```bash
 cd ../Backend
 npm install
 ```
 
-### 3. Start the Application
+### 3. Run the Application
 
-#### Run the Frontend
-
-Open a terminal, navigate to the `Frontend` folder, and run:
+#### Frontend (React + Vite)
 
 ```bash
 npm run dev
 ```
 
-#### Run the Backend
-
-Open another terminal, navigate to the `Backend` folder, and run:
+#### Backend (Node.js + Express)
 
 ```bash
 npm run dev
 ```
 
-### 4. Access the Application
+### 4. Open the App
 
-- **Frontend**: Visit [http://localhost:5173](http://localhost:5173) (default React development server port).
-- **Backend**: The backend server will typically run on [http://localhost:3000](http://localhost:3000). Adjust the backend port if configured otherwise.
+- **Frontend**: [http://localhost:5173](http://localhost:5173)
+- **Backend**: [http://localhost:3000](http://localhost:3000)
 
-## <a name="environment-variables">🌏Environment Variables</a>
+---
 
-Ensure to set up the required environment variables for both `Frontend` and `Backend`.
+## 🌐 Environment Variables
 
-#### Frontend (`.env`)
+Create `.env` files in both `Frontend/` and `Backend/` directories.
+`.env.example` files are already present in the folders.
 
-```plaintext
-VITE_SERVER_URL = http://localhost:3000
-VITE_ENVIRONMENT = development # Change to "production" for deployment
-VITE_RIDE_TIMEOUT = 90000 # ride will automatically cancel after 1.5 minutes if no-one accepts the ride
+### Frontend `.env`
+
+```env
+VITE_SERVER_URL=http://localhost:3000
+VITE_ENVIRONMENT=development
+VITE_RIDE_TIMEOUT=90000
 ```
 
-#### Backend (`.env`)
+### Backend `.env`
 
-```plaintext
-PORT = 3000
-SERVER_URL = http://localhost:3000 
-CLIENT_URL = http://localhost:5173 # Change to deployed frontend url if in production
-ENVIRONMENT = development # Change to "production" for deployment
-MONGODB_PROD_URL = <your-mongodb-atlas-connection-string>
-MONGODB_DEV_URL = mongodb://127.0.0.1:27017/quickRide
-JWT_SECRET = <your-json-secret-string>
-GOOGLE_MAPS_API = <your-google-maps-api-key>
-MAIL_USER = <your-gmail-id>
-MAIL_PASS = <your-app-specific-gmail-password>
+```env
+PORT=3000
+RELOAD_INTERVAL = 10
+SERVER_URL=http://localhost:3000
+CLIENT_URL=http://localhost:5173
+ENVIRONMENT=development
+MONGODB_PROD_URL=<your-mongodb-atlas-url>
+MONGODB_DEV_URL=mongodb://127.0.0.1:27017/quickRide
+JWT_SECRET=<your-jwt-secret>
+GOOGLE_MAPS_API=<your-google-maps-api-key>
+MAIL_USER=<your-gmail-id>
+MAIL_PASS=<your-app-password>
 ```
 
-## <a name="scripts">📜Scripts</a>
+---
 
-- **`npm run dev`**: Starts the development server (both frontend and backend).
-- **`npm install`**: Installs project dependencies.
+## 🤝 Contributing
+
+We welcome community contributions! To contribute:
+
+1. Star this repository
+2. Fork this repository
+3. Create a new branch (`git checkout -b feature/YourFeature`)
+4. Commit your changes (`git commit -m 'Add your feature description...'`)
+5. Push to the branch (`git push origin feature/YourFeature`)
+6. Create a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+**Ready to contribute? Let’s build something amazing together.**
