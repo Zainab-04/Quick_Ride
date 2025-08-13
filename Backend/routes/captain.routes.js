@@ -12,7 +12,7 @@ router.post("/register",
     captainController.registerCaptain
 );
 
-router.get("/verify-email", authCaptain, captainController.verifyEmail);
+router.post("/verify-email", captainController.verifyEmail);
 
 router.post("/login", 
     body("email").isEmail().withMessage("Invalid Email"),

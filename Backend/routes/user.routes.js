@@ -12,7 +12,7 @@ router.post("/register",
     userController.registerUser
 );
 
-router.get("/verify-email", authUser, userController.verifyEmail);
+router.post("/verify-email", userController.verifyEmail);
 
 router.post("/login", 
     body("email").isEmail().withMessage("Invalid Email"),

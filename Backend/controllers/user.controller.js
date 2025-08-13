@@ -40,17 +40,28 @@ module.exports.verifyEmail = asyncHandler(async (req, res) => {
     return res.status(400).json(errors.array());
   }
 
-  const user = req.user;
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ message: "Invalid verification link", error: "Token is required" });
+  }
+
+  let decodedTokenData = jwt.verify(token, process.env.JWT_SECRET);
+  if (!decodedTokenData || decodedTokenData.purpose !== "email-verification") {
+    return res.status(400).json({ message: "You're trying to use an invalid or expired verification link", error: "Invalid token" });
+  }
+
+  let user = await userModel.findOne({ _id: decodedTokenData.id });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found. Please ask for another verification link." });
+  }
 
   if (user.emailVerified) {
     return res.status(400).json({ message: "Email already verified" });
   }
 
-  const updatedUser = await userModel.findByIdAndUpdate(
-    user._id,
-    { emailVerified: true },
-    { new: true }
-  );
+  user.emailVerified = true;
+  await user.save();
 
   res.status(200).json({
     message: "Email verified successfully",

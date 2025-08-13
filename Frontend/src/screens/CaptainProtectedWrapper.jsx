@@ -10,7 +10,7 @@ function CaptainProtectedWrapper({ children }) {
   const navigate = useNavigate();
   const { captain, setCaptain } = useCaptain();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isVerified, setIsVerified] = useState(null);
 
   useEffect(() => {

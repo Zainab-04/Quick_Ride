@@ -18,9 +18,6 @@ function VerifyEmail({ user, role }) {
     const { timeLeft, isActive, startCooldown } = useCooldownTimer(60000, 'forgot-password-cooldown');
 
     const sendVerificationEmail = async () => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 5000);
         try {
             setLoading(true);
             const response = await axios.get(

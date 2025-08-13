@@ -8,7 +8,7 @@ import { Button, Spinner } from "../components";
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
   const { userType } = useParams();
-  const token = searchParams.get("token");
+  const emailVerificationToken = searchParams.get("token");
 
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,13 +17,9 @@ const VerifyEmail = () => {
   const verifyEmail = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
+      const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/${userType}/verify-email`,
-        {
-          headers: {
-            token: token,
-          },
-        }
+        { token: emailVerificationToken }
       );
       console.log(response.data)
       if (response.status === 200) {
@@ -45,12 +41,12 @@ const VerifyEmail = () => {
   };
 
   useEffect(() => {
-    if (token) {
+    if (emailVerificationToken) {
       verifyEmail();
     } else {
       setResponse("Invalid verification link.");
     }
-  }, [token]);
+  }, [emailVerificationToken]);
   return (
     <div className="w-full h-dvh flex flex-col items-center justify-center text-center p-4">
 

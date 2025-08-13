@@ -29,7 +29,7 @@ module.exports.sendVerificationEmail = asyncHandler(async (req, res) => {
   }
 
   const token = jwt.sign(
-    { id: user._id, userType: req.userType },
+    { id: user._id, userType: req.userType, purpose: "email-verification" },
     process.env.JWT_SECRET,
     {
       expiresIn: "15m",
