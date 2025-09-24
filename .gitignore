@@ -1,1 +1,7 @@
 tasks.md
+# Exclude env files
+Backend/.env
+Frontend/.env
+
+# Exclude password file
+pass.txt
