@@ -2,6 +2,10 @@
 Backend/.env
 Frontend/.env
 
+Android/iOS build folders
+Frontend/android
+Frontend/ios
+
 # Exclude password file
 pass.txt
 
