@@ -39,10 +39,6 @@ Follow these steps to get the project running locally:
 
 ## ⚙️ Tech Stack
 
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=html,css,js,react native,nodejs,express,mongo,tailwind,gcp,npm,vercel,git,gmail,postman&perline=7" />
-</p>
-
 | **Category**       | **Technologies / Tools**                                              |
 | ------------------ | --------------------------------------------------------------------- |
 | **Frontend**       | HTML, CSS, React Native, Tailwind CSS, Google Maps, Android, ios      |
