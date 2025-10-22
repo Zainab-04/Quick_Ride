@@ -2,28 +2,40 @@
     <img src="/Frontend//public/logo-quickride-green.png" height="100px" >
 </div>
 
-# QuickRide - Full Stack Ride Booking Application
+# QuickRide
 
-QuickRide is a feature-rich project built using modern web technologies. It replicates the core features and functionalities of the existing ride booking platforms, including **user authentication**, **ride booking**, **real-time location tracking**, **fare calculation** and **real-time communication**. The application features a clean and responsive user interface, ensuring an intuitive user experience. Designed as a learning and portfolio project, it showcases skills in **frontend and backend development, API integration, and real-time features**.
-
-
----
-
-⭐ **If you found this project helpful or interesting, please consider giving it a star on [GitHub](https://github.com/asif-khan-2k19/QuickRide)! It helps others discover the project and keeps me motivated to improve it.** ⭐
+QuickRide is a ride-sharing web and mobile application that allows users to book rides easily, view available drivers, and track trips in real-time.
 
 ---
 
-## 📚 Table of Contents
+## 🚀 Setup Instructions
 
-1. [Tech Stack](#tech-stack)
-2. [Features](#features)
-3. [Screenshots](#screenshots)
-4. [Quick Start](#quick-start)
-5. [Environment Variables](#environment-variables)
-6. [Contributing](#contributing)
-7. [License](#license)
+Follow these steps to get the project running locally:
 
----
+### **Frontend**
+1. Navigate to the frontend folder:
+   ```bash
+   cd Frontend
+2. Install dependencies:
+   npm install
+
+3. Install Capacitor:
+   npm install @capacitor/core @capacitor/cli
+   npx cap init
+
+4. Build your React app:
+   npm run build
+
+5. Copy build files to Capacitor:
+    npx cap add android
+    npx cap add ios
+    npx cap copy
+    npx cap open android   # opens in Android Studio
+    npx cap open ios
+
+ 6. Connect with your backend
+    cd Backend
+    npm start
 
 ## ⚙️ Tech Stack
 
@@ -33,7 +45,7 @@ QuickRide is a feature-rich project built using modern web technologies. It repl
 
 | **Category**       | **Technologies / Tools**                                              |
 | ------------------ | --------------------------------------------------------------------- |
-| **Frontend**       | HTML, CSS, React.js, Tailwind CSS, Google Maps                        |
+| **Frontend**       | HTML, CSS, React Native, Tailwind CSS, Google Maps, Android, ios      |
 | **Backend**        | Node.js, Express.js, MongoDB, Socket IO, NodeMailer, Google Maps APIs |
 | **Authentication** | JWT (JSON Web Token), bcrypt                                          |
 | **Deployment**     | Vercel, Render                                                        |
@@ -42,7 +54,7 @@ QuickRide is a feature-rich project built using modern web technologies. It repl
 
 ---
 
-## ✨ Features
+## ✨ Mobile App Features
 
 ### 🔐 Authentication & Authorization
 
@@ -125,109 +137,6 @@ QuickRide is a feature-rich project built using modern web technologies. It repl
 
 ---
 
-## ⚡ Quick Start
-
-### 📁 Project Structure
-
-```
-
-📂 Backend      // Node.js + Express server
-📂 Frontend     // React.js application
-
-```
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/asif-khan-2k19/QuickRide.git
-cd QuickRide
-```
-
-### 2. Install Dependencies
-
-#### Frontend
-
-```bash
-cd Frontend
-npm install
-```
-
-#### Backend
-
-```bash
-cd ../Backend
-npm install
-```
-
-### 3. Run the Application
-
-#### Frontend (React + Vite)
-
-```bash
-npm run dev
-```
-
-#### Backend (Node.js + Express)
-
-```bash
-npm run dev
-```
-
-### 4. Open the App
-
-- **Frontend**: [http://localhost:5173](http://localhost:5173)
-- **Backend**: [http://localhost:3000](http://localhost:3000)
-
----
-
-## 🌐 Environment Variables
-
-Create `.env` files in both `Frontend/` and `Backend/` directories.
-`.env.example` files are already present in the folders.
-
-### Frontend `.env`
-
-```env
-VITE_SERVER_URL=http://localhost:3000
-VITE_ENVIRONMENT=development
-VITE_RIDE_TIMEOUT=90000
-```
-
-### Backend `.env`
-
-```env
-PORT=3000
-RELOAD_INTERVAL = 10
-SERVER_URL=http://localhost:3000
-CLIENT_URL=http://localhost:5173
-ENVIRONMENT=development
-MONGODB_PROD_URL=<your-mongodb-atlas-url>
-MONGODB_DEV_URL=mongodb://127.0.0.1:27017/quickRide
-JWT_SECRET=<your-jwt-secret>
-GOOGLE_MAPS_API=<your-google-maps-api-key>
-MAIL_USER=<your-gmail-id>
-MAIL_PASS=<your-app-password>
-```
-
----
-
-## 🤝 Contributing
-
-We welcome community contributions! To contribute:
-
-1. Star this repository
-2. Fork this repository
-3. Create a new branch (`git checkout -b feature/YourFeature`)
-4. Commit your changes (`git commit -m 'Add your feature description...'`)
-5. Push to the branch (`git push origin feature/YourFeature`)
-6. Create a Pull Request
-
----
-
 ## 📝 License
 
 This project is licensed under the [MIT License](LICENSE).
-
----
-
-**Ready to contribute? Let’s build something amazing together.**
